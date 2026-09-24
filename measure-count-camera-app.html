@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0a0d12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Measure & Count — Camera Tools</title>
+<style>
+:root{
+  --bg:#080b10;--panel:#11161f;--panel2:#151b25;--line:#273141;--text:#f5f7fa;--muted:#98a3b3;
+  --accent:#d9b24c;--accent2:#6aa9ff;--good:#58d68d;--danger:#ff6b6b;--white:#fff;
+  --shadow:0 14px 42px rgba(0,0,0,.30);--r:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+body{display:flex;justify-content:center}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{width:100%;max-width:1100px;min-height:100vh;background:linear-gradient(180deg,#0a0d12 0,#090c11 100%)}
+header{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border-bottom:1px solid var(--line);background:rgba(8,11,16,.92);backdrop-filter:blur(18px)}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:42px;height:42px;border:1px solid var(--line);border-radius:13px;display:grid;place-items:center;background:#111722}
+.logo svg{width:23px;height:23px;stroke:var(--accent);fill:none;stroke-width:1.8}
+.brand h1{margin:0;font-size:1.03rem}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:.73rem}
+.header-actions{display:flex;gap:8px}
+.icon-btn{width:42px;height:42px;border:1px solid var(--line);border-radius:12px;background:#111722;color:var(--text);display:grid;place-items:center}
+.icon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
+main{padding:18px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.tab{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:15px;padding:13px 12px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:9px}
+.tab.active{background:var(--panel2);color:var(--text);border-color:#475468;box-shadow:inset 0 0 0 1px rgba(217,178,76,.13)}
+.tab svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7}
+.screen{display:none}
+.screen.active{display:block}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.card.pad{padding:16px}
+.card h2{margin:0 0 8px;font-size:1rem}
+.card .sub{color:var(--muted);font-size:.81rem;line-height:1.45}
+.controls{display:flex;flex-wrap:wrap;gap:9px}
+.btn{border:1px solid var(--line);background:#161d28;color:var(--text);border-radius:13px;padding:12px 15px;min-height:46px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:hover{border-color:#46556b}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#111}
+.btn.blue{background:#1e5ea8;border-color:#2f78d0}
+.btn.green{background:#1a7048;border-color:#319f6d}
+.btn.danger{background:#6b2020;border-color:#a93535}
+.btn.small{padding:9px 11px;min-height:40px;border-radius:11px;font-size:.82rem}
+.btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}
+.video-wrap{position:relative;aspect-ratio:4/3;background:#020305}
+video,canvas.capture{width:100%;height:100%;display:block;object-fit:cover}
+.video-layer{position:absolute;inset:0;pointer-events:none}
+.guide{position:absolute;inset:10%;border:1px dashed rgba(255,255,255,.27);border-radius:14px}
+.center-dot{position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;background:#fff;transform:translate(-50%,-50%)}
+.camera-topline{position:absolute;left:12px;top:12px;padding:7px 9px;background:rgba(0,0,0,.56);border:1px solid rgba(255,255,255,.13);border-radius:10px;font-size:.72rem;color:#e8edf5}
+.camera-status{position:absolute;right:12px;top:12px;padding:7px 9px;background:rgba(0,0,0,.56);border:1px solid rgba(255,255,255,.13);border-radius:10px;font-size:.72rem;color:#d6e1ef}
+.measure-stage{position:relative;background:#06080b;min-height:280px;touch-action:none}
+#measureCanvas{width:100%;height:auto;display:block}
+.stage-note{padding:9px 12px;color:var(--muted);font-size:.74rem;border-top:1px solid var(--line)}
+.row{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.result-big{font-size:2.05rem;font-weight:900;letter-spacing:-.03em}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
+.kpi{background:#0c1118;border:1px solid var(--line);border-radius:14px;padding:11px}
+.kpi .k{color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em}
+.kpi .v{margin-top:4px;font-size:1.05rem;font-weight:900}
+.fields{display:grid;gap:10px}
+.field label{display:block;color:var(--muted);font-size:.72rem;font-weight:800;margin-bottom:5px}
+.field input,.field select{width:100%;background:#0c1118;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px 13px;outline:none}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+.divider{height:1px;background:var(--line);margin:14px 0}
+.point-list{display:grid;gap:7px;max-height:210px;overflow:auto;margin-top:10px}
+.point{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#0d131c;border:1px solid var(--line);border-radius:11px;padding:8px 10px}
+.point span{font-size:.77rem;color:#dce3ec}
+.badge{padding:5px 8px;border-radius:999px;font-size:.67rem;font-weight:900;background:#182434;color:#bcd5f1}
+.badge.gold{background:#352f19;color:#edd88c}
+.notice{border:1px solid #3b4a60;background:#101824;border-radius:13px;padding:10px 11px;font-size:.75rem;line-height:1.45;color:#c7d2df}
+.notice strong{color:#fff}
+.capture-panel{display:none}
+.capture-panel.active{display:block}
+.photo-preview{position:relative;background:#05070a}
+.photo-preview img{display:block;width:100%;height:auto;max-height:64vh;object-fit:contain}
+.photo-preview canvas{position:absolute;inset:0;width:100%;height:100%}
+.count-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.count-result{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.count-number{font-size:3.2rem;font-weight:950;line-height:1}
+.count-label{color:var(--muted);font-size:.78rem}
+.progress{height:8px;border-radius:999px;background:#0b0f15;border:1px solid var(--line);overflow:hidden;margin-top:10px}
+.progress > i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.history{display:grid;gap:8px;max-height:440px;overflow:auto}
+.hist-row{display:grid;grid-template-columns:1fr auto;gap:10px;padding:10px;border:1px solid var(--line);background:#0d131c;border-radius:12px}
+.hist-row .date{font-weight:900;font-size:.78rem}
+.hist-row .meta{color:var(--muted);font-size:.71rem;margin-top:3px}
+.hist-count{font-size:1rem;font-weight:900;color:var(--accent)}
+.empty{padding:22px;text-align:center;color:var(--muted);font-size:.8rem}
+.model-note{margin-top:9px;color:var(--muted);font-size:.68rem;line-height:1.4}
+.footer-note{padding:18px 2px 4px;color:#737f8f;font-size:.68rem;line-height:1.45}
+.hidden{display:none!important}
+.modal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.68);display:none;align-items:center;justify-content:center;padding:16px}
+.modal.open{display:flex}
+.modal-card{width:min(560px,100%);max-height:85vh;overflow:auto;background:var(--panel);border:1px solid #3a4658;border-radius:20px;box-shadow:var(--shadow);padding:16px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.modal-head h3{margin:0}
+.tip-list{display:grid;gap:8px;margin-top:12px}
+.tip{padding:10px 11px;border:1px solid var(--line);background:#0d131c;border-radius:12px;color:#c4cfdb;font-size:.76rem;line-height:1.45}
+.toast{position:fixed;left:50%;bottom:18px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:200;padding:11px 14px;border:1px solid #3c4758;background:#111824;color:#eef3f8;border-radius:12px;box-shadow:var(--shadow);font-size:.78rem;font-weight:800;transition:.22s ease}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:820px){
+  .grid{grid-template-columns:1fr}
+  .card-side{order:2}
+}
+@media(max-width:560px){
+  main{padding:12px}
+  header{padding:12px}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .kpi:last-child{grid-column:1/-1}
+  .result-big{font-size:1.8rem}
+  .count-number{font-size:2.7rem}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="brand">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5 5.6 15 15 5.6a2.1 2.1 0 1 1 3 3L8.6 18 4 19.5Z"/><path d="m13.8 6.8 3.4 3.4"/><path d="M5 4h4M7 2v4M18 16h3M19.5 14.5v3"/></svg>
+    </div>
+    <div><h1>Measure & Count</h1><p>Camera tools for real objects</p></div>
+  </div>
+  <div class="header-actions">
+    <button class="icon-btn" id="helpBtn" title="Help" aria-label="Help">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.5 2.5 0 1 1 4 2c-.9.7-1.8 1.2-1.8 2.4"/><path d="M12 16.5h.01"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <div class="tabs">
+    <button class="tab active" data-tab="measure">
+      <svg viewBox="0 0 24 24"><path d="M4 20 20 4M6 16l-2-2M9 13 7 11M12 10 10 8M15 7l-2-2M18 6l-2-2"/></svg>
+      Measure
+    </button>
+    <button class="tab" data-tab="count">
+      <svg viewBox="0 0 24 24"><path d="M5 6.5A1.5 1.5 0 0 1 6.5 5h11A1.5 1.5 0 0 1 19 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 17.5Z"/><path d="M8 12h8M12 8v8"/></svg>
+      Object Counter
+    </button>
+  </div>
+
+  <section id="screen-measure" class="screen active">
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div class="video-wrap" id="measureCameraWrap">
+            <video id="measureVideo" playsinline autoplay muted></video>
+            <div class="video-layer">
+              <div class="guide"></div><div class="center-dot"></div>
+              <div class="camera-topline">Rear camera preferred</div>
+              <div class="camera-status" id="measureCamStatus">Camera off</div>
+            </div>
+          </div>
+          <div class="pad">
+            <div class="controls">
+              <button class="btn primary" id="measureStartBtn">
+                <svg viewBox="0 0 24 24"><path d="m8 5 11 7-11 7V5Z"/></svg> Start camera
+              </button>
+              <button class="btn" id="measureCaptureBtn">
+                <svg viewBox="0 0 24 24"><path d="M5 8.5A2.5 2.5 0 0 1 7.5 6h1l1-1.5h5L15.5 6h1A2.5 2.5 0 0 1 19 8.5v7A2.5 2.5 0 0 1 16.5 18h-9A2.5 2.5 0 0 1 5 15.5Z"/><circle cx="12" cy="12" r="3.2"/></svg> Capture
+              </button>
+              <button class="btn" id="measureSwitchBtn">
+                <svg viewBox="0 0 24 24"><path d="M7 7h6l-2-2M17 17h-6l2 2M5.5 9A7 7 0 0 1 17 6.3M18.5 15A7 7 0 0 1 7 17.7"/></svg> Switch camera
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="measure-stage" id="measureStage">
+            <canvas id="measureCanvas" width="1200" height="900"></canvas>
+          </div>
+          <div class="stage-note" id="measureHint">Capture a view, then select points directly on the image.</div>
+        </div>
+      </div>
+
+      <div class="card card-side pad">
+        <h2>Measurement setup</h2>
+        <div class="sub">Calibrate using an object with a known distance. Then choose points on the captured photo.</div>
+
+        <div class="divider"></div>
+        <div class="fields">
+          <div class="field">
+            <label>Unit</label>
+            <select id="measureUnit">
+              <option value="cm">Centimetre (cm)</option>
+              <option value="m">Metre (m)</option>
+              <option value="mm">Millimetre (mm)</option>
+              <option value="in">Inch (in)</option>
+              <option value="ft">Feet (ft)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Known calibration distance</label>
+            <input id="knownDistance" type="number" min="0.001" step="any" placeholder="Example: 30">
+          </div>
+        </div>
+
+        <div class="controls" style="margin-top:10px">
+          <button class="btn gold" id="calibrateBtn">Set calibration points</button>
+          <button class="btn small" id="resetMeasureBtn">Reset points</button>
+        </div>
+
+        <div class="notice" style="margin-top:12px">
+          <strong>How it works:</strong> choose two points that match your known distance. After calibration, every new line is converted to your selected unit.
+        </div>
+
+        <div class="divider"></div>
+        <div class="row">
+          <div><h2 style="margin:0">Mode</h2><div class="sub">Tap points on the photo</div></div>
+          <select id="measureMode" class="btn" style="padding:9px 11px">
+            <option value="length">Length</option>
+            <option value="perimeter">Perimeter</option>
+            <option value="area">Area</option>
+          </select>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi"><div class="k">Points</div><div class="v" id="pointCount">0</div></div>
+          <div class="kpi"><div class="k">Length</div><div class="v" id="lengthKpi">—</div></div>
+          <div class="kpi"><div class="k">Area</div><div class="v" id="areaKpi">—</div></div>
+        </div>
+
+        <div class="result-big" id="measureResult" style="margin-top:14px">—</div>
+        <div class="sub" id="measureResultSub">No points selected.</div>
+
+        <div class="point-list" id="pointList"></div>
+        <div class="controls" style="margin-top:10px">
+          <button class="btn small" id="undoPointBtn">Undo point</button>
+          <button class="btn small danger" id="clearPointsBtn">Clear</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-count" class="screen">
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div class="video-wrap">
+            <video id="countVideo" playsinline autoplay muted></video>
+            <div class="video-layer">
+              <div class="guide"></div><div class="center-dot"></div>
+              <div class="camera-topline">Place the objects in view</div>
+              <div class="camera-status" id="countCamStatus">Camera off</div>
+            </div>
+          </div>
+          <div class="pad">
+            <div class="count-toolbar">
+              <button class="btn primary" id="countStartBtn">
+                <svg viewBox="0 0 24 24"><path d="m8 5 11 7-11 7V5Z"/></svg> Start camera
+              </button>
+              <button class="btn" id="countCaptureBtn">
+                <svg viewBox="0 0 24 24"><path d="M5 8.5A2.5 2.5 0 0 1 7.5 6h1l1-1.5h5L15.5 6h1A2.5 2.5 0 0 1 19 8.5v7A2.5 2.5 0 0 1 16.5 18h-9A2.5 2.5 0 0 1 5 15.5Z"/><circle cx="12" cy="12" r="3.2"/></svg> Capture & Count
+              </button>
+              <button class="btn" id="countSwitchBtn">
+                <svg viewBox="0 0 24 24"><path d="M7 7h6l-2-2M17 17h-6l2 2M5.5 9A7 7 0 0 1 17 6.3M18.5 15A7 7 0 0 1 7 17.7"/></svg> Switch camera
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card capture-panel" id="countCapturePanel" style="margin-top:16px">
+          <div class="photo-preview" id="countPhotoPreview">
+            <img id="countImage" alt="Captured objects">
+            <canvas id="countOverlay"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-side pad">
+        <h2>Object Counter</h2>
+        <div class="sub">Enter what you want to count. The AI searches the captured image, draws boxes around detections and gives the total.</div>
+
+        <div class="divider"></div>
+        <div class="fields">
+          <div class="field">
+            <label>Object to count</label>
+            <input id="targetObject" value="pencil" placeholder="pencil, bottle, pen, chair...">
+          </div>
+          <div class="field">
+            <label>Detection confidence</label>
+            <select id="countThreshold">
+              <option value="0.08">Broad — more detections</option>
+              <option value="0.12" selected>Balanced</option>
+              <option value="0.18">Strict — fewer false positives</option>
+              <option value="0.25">Very strict</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn blue" id="loadAiBtn" style="width:100%;margin-top:10px">
+          <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M6.7 6.7l10.6 10.6M17.3 6.7 6.7 17.3"/></svg>
+          Load AI counter
+        </button>
+        <div class="progress" aria-hidden="true"><i id="modelProgress"></i></div>
+        <div class="model-note" id="modelStatus">AI model is loaded only when you use the counter. It runs in your browser.</div>
+
+        <div class="divider"></div>
+        <div class="count-result">
+          <div>
+            <div class="count-number" id="todayCount">0</div>
+            <div class="count-label" id="countLabel">Detected today</div>
+          </div>
+          <div class="badge gold" id="scanBadge">Not scanned</div>
+        </div>
+
+        <div class="controls" style="margin-top:12px">
+          <button class="btn green" id="scanImageBtn">Scan captured image</button>
+          <button class="btn small" id="saveCountBtn">Save today's result</button>
+          <button class="btn small danger" id="clearHistoryBtn">Clear history</button>
+        </div>
+
+        <div class="divider"></div>
+        <div class="row">
+          <h2 style="margin:0">Day-wise history</h2>
+          <span class="badge" id="historyDays">0 days</span>
+        </div>
+        <div class="history" id="historyList"></div>
+        <div class="footer-note">History is stored locally in this browser. Camera photos are not uploaded by this app's code.</div>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+
+<div class="modal" id="helpModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3>How to use</h3>
+      <button class="icon-btn" id="closeHelpBtn" aria-label="Close help"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="tip-list">
+      <div class="tip"><strong>Measure:</strong> capture a photo, calibrate with two points of a known distance, then tap points for length, perimeter or area.</div>
+      <div class="tip"><strong>Object Counter:</strong> type the object name (for example <strong>pencil</strong>), capture the scene, then scan. Detected objects are outlined and numbered.</div>
+      <div class="tip"><strong>Daily history:</strong> save a result once per day. The app stores the object's name, date and count in local browser storage.</div>
+      <div class="tip"><strong>Accuracy:</strong> camera perspective, overlap, shadows and object size can affect measurements and AI counting. Keep the camera steady and objects separated where possible.</div>
+      <div class="tip"><strong>Camera permission:</strong> browser camera access requires a secure context such as HTTPS on supported browsers.</div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { pipeline, env } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.0";
+
+env.allowLocalModels = false;
+
+const $ = (id) => document.getElementById(id);
+const qs = (sel, root=document) => root.querySelector(sel);
+
+let measureStream = null;
+let countStream = null;
+let measureFacing = "environment";
+let countFacing = "environment";
+let measureImage = null;
+let measureCanvas = $("measureCanvas");
+let measureCtx = measureCanvas.getContext("2d");
+let measurePoints = [];
+let calibrationMode = false;
+let calibrationPoints = [];
+let pixelsPerUnit = null;
+
+let countPhotoBlob = null;
+let countDetections = [];
+let detector = null;
+let detectorLoading = false;
+
+const HISTORY_KEY = "measure-count-daily-history-v1";
+
+function toast(msg){
+  const el = $("toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=>el.classList.remove("show"), 2200);
+}
+
+function currentUnit(){
+  return $("measureUnit").value;
+}
+function formatUnit(v, unit=currentUnit()){
+  if(!Number.isFinite(v)) return "—";
+  const fixed = Math.abs(v) < 0.01 ? v.toFixed(3) : Math.abs(v) < 10 ? v.toFixed(2) : v.toFixed(1);
+  return fixed + " " + unit;
+}
+function ensureCameraSupport(){
+  if(!navigator.mediaDevices?.getUserMedia){
+    toast("Camera is not available in this browser.");
+    return false;
+  }
+  return true;
+}
+async function startCamera(kind){
+  if(!ensureCameraSupport()) return false;
+  let facing = kind==="measure" ? measureFacing : countFacing;
+  const constraints = {
+    audio:false,
+    video:{
+      facingMode:{ideal:facing},
+      width:{ideal:1280},
+      height:{ideal:720}
+    }
+  };
+  try{
+    if(kind==="measure" && measureStream) stopStream("measure");
+    if(kind==="count" && countStream) stopStream("count");
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    if(kind==="measure"){
+      measureStream = stream;
+      $("measureVideo").srcObject = stream;
+      $("measureCamStatus").textContent = facing==="environment" ? "Rear camera" : "Front camera";
+    }else{
+      countStream = stream;
+      $("countVideo").srcObject = stream;
+      $("countCamStatus").textContent = facing==="environment" ? "Rear camera" : "Front camera";
+    }
+    return true;
+  }catch(err){
+    toast("Camera permission was not granted.");
+    return false;
+  }
+}
+function stopStream(kind){
+  const stream = kind==="measure" ? measureStream : countStream;
+  if(stream) stream.getTracks().forEach(t=>t.stop());
+  if(kind==="measure"){
+    measureStream=null; $("measureVideo").srcObject=null; $("measureCamStatus").textContent="Camera off";
+  }else{
+    countStream=null; $("countVideo").srcObject=null; $("countCamStatus").textContent="Camera off";
+  }
+}
+async function switchCamera(kind){
+  if(kind==="measure"){
+    measureFacing = measureFacing==="environment" ? "user" : "environment";
+    await startCamera("measure");
+  }else{
+    countFacing = countFacing==="environment" ? "user" : "environment";
+    await startCamera("count");
+  }
+}
+function captureVideoFrame(video){
+  const w = video.videoWidth || 1280;
+  const h = video.videoHeight || 720;
+  const c = document.createElement("canvas");
+  c.width=w; c.height=h;
+  c.getContext("2d").drawImage(video,0,0,w,h);
+  return c;
+}
+
+function drawMeasure(){
+  measureCtx.clearRect(0,0,measureCanvas.width,measureCanvas.height);
+  if(measureImage) measureCtx.drawImage(measureImage,0,0,measureCanvas.width,measureCanvas.height);
+  if(!measureImage){
+    measureCtx.fillStyle="#05070a";
+    measureCtx.fillRect(0,0,measureCanvas.width,measureCanvas.height);
+    measureCtx.fillStyle="#7e8998";
+    measureCtx.font="700 22px system-ui";
+    measureCtx.textAlign="center";
+    measureCtx.fillText("Capture a photo to start measuring",measureCanvas.width/2,measureCanvas.height/2);
+    return;
+  }
+
+  if(calibrationPoints.length===2){
+    line(calibrationPoints[0],calibrationPoints[1],"#d9b24c",5,true);
+    dot(calibrationPoints[0],"#d9b24c","C1");
+    dot(calibrationPoints[1],"#d9b24c","C2");
+  }
+  for(let i=0;i<measurePoints.length;i++){
+    const a=measurePoints[i];
+    if(i>0) line(measurePoints[i-1],a,"#6aa9ff",4,false);
+    dot(a,"#6aa9ff",String(i+1));
+  }
+  if($("measureMode").value!=="length" && measurePoints.length>=3){
+    if($("measureMode").value==="area"){
+      line(measurePoints[measurePoints.length-1],measurePoints[0],"#6aa9ff",4,false);
+      measureCtx.fillStyle="rgba(106,169,255,.12)";
+      measureCtx.beginPath();
+      measureCtx.moveTo(measurePoints[0].x,measurePoints[0].y);
+      for(let i=1;i<measurePoints.length;i++) measureCtx.lineTo(measurePoints[i].x,measurePoints[i].y);
+      measureCtx.closePath(); measureCtx.fill();
+    }else{
+      line(measurePoints[measurePoints.length-1],measurePoints[0],"#6aa9ff",3,true);
+    }
+  }
+}
+function line(a,b,color,width,dash){
+  measureCtx.save();
+  measureCtx.strokeStyle=color; measureCtx.lineWidth=width; measureCtx.setLineDash(dash?[10,8]:[]);
+  measureCtx.beginPath(); measureCtx.moveTo(a.x,a.y); measureCtx.lineTo(b.x,b.y); measureCtx.stroke();
+  measureCtx.restore();
+}
+function dot(p,color,label){
+  measureCtx.save();
+  measureCtx.fillStyle="rgba(0,0,0,.58)";
+  measureCtx.beginPath(); measureCtx.arc(p.x,p.y,18,0,Math.PI*2); measureCtx.fill();
+  measureCtx.fillStyle=color; measureCtx.beginPath(); measureCtx.arc(p.x,p.y,7,0,Math.PI*2); measureCtx.fill();
+  measureCtx.fillStyle="#fff"; measureCtx.font="800 13px system-ui"; measureCtx.textAlign="center"; measureCtx.textBaseline="middle";
+  measureCtx.fillText(label,p.x,p.y-28);
+  measureCtx.restore();
+}
+function imagePointFromEvent(ev){
+  const rect=measureCanvas.getBoundingClientRect();
+  const scaleX=measureCanvas.width/rect.width;
+  const scaleY=measureCanvas.height/rect.height;
+  return {x:(ev.clientX-rect.left)*scaleX,y:(ev.clientY-rect.top)*scaleY};
+}
+function distancePx(a,b){
+  return Math.hypot(b.x-a.x,b.y-a.y);
+}
+function polygonAreaPx(points){
+  let s=0;
+  for(let i=0;i<points.length;i++){
+    const a=points[i], b=points[(i+1)%points.length];
+    s += a.x*b.y - b.x*a.y;
+  }
+  return Math.abs(s)/2;
+}
+function perimeterPx(points){
+  if(points.length<2) return 0;
+  let s=0;
+  for(let i=1;i<points.length;i++) s+=distancePx(points[i-1],points[i]);
+  if(points.length>=3) s+=distancePx(points.at(-1),points[0]);
+  return s;
+}
+function applyMeasureResult(){
+  const mode=$("measureMode").value;
+  $("pointCount").textContent=measurePoints.length;
+  const list=$("pointList");
+  list.innerHTML="";
+  measurePoints.forEach((p,i)=>{
+    const div=document.createElement("div"); div.className="point";
+    div.innerHTML=`<span>Point ${i+1}</span><span class="badge">${Math.round(p.x)}, ${Math.round(p.y)}</span>`;
+    list.appendChild(div);
+  });
+  $("lengthKpi").textContent="—";
+  $("areaKpi").textContent="—";
+  if(!pixelsPerUnit){
+    $("measureResult").textContent=calibrationPoints.length===1?"Select the second calibration point":"Calibrate first";
+    $("measureResultSub").textContent="Known scale is required for real-world units.";
+    drawMeasure(); return;
+  }
+  if(mode==="length"){
+    if(measurePoints.length>=2){
+      const v=distancePx(measurePoints[0],measurePoints[1])/pixelsPerUnit;
+      $("lengthKpi").textContent=formatUnit(v);
+      $("measureResult").textContent=formatUnit(v);
+      $("measureResultSub").textContent="Point 1 to Point 2";
+    }else{
+      $("measureResult").textContent="Select 2 points"; $("measureResultSub").textContent="Length uses the first two points.";
+    }
+  }else if(mode==="perimeter"){
+    if(measurePoints.length>=2){
+      const v=perimeterPx(measurePoints)/pixelsPerUnit;
+      $("lengthKpi").textContent=formatUnit(v);
+      $("measureResult").textContent=formatUnit(v);
+      $("measureResultSub").textContent="Closed perimeter";
+    }else{
+      $("measureResult").textContent="Select points"; $("measureResultSub").textContent="Use at least 2 points.";
+    }
+  }else{
+    if(measurePoints.length>=3){
+      const area=polygonAreaPx(measurePoints)/(pixelsPerUnit*pixelsPerUnit);
+      const per=perimeterPx(measurePoints)/pixelsPerUnit;
+      $("areaKpi").textContent=formatUnit(area,currentUnit()+"²");
+      $("lengthKpi").textContent=formatUnit(per);
+      $("measureResult").textContent=formatUnit(area,currentUnit()+"²");
+      $("measureResultSub").textContent="Area • perimeter "+formatUnit(per);
+    }else{
+      $("measureResult").textContent="Select 3+ points"; $("measureResultSub").textContent="Tap every corner of the object.";
+    }
+  }
+  drawMeasure();
+}
+function handleMeasureTap(ev){
+  if(!measureImage) return;
+  const p=imagePointFromEvent(ev);
+  if(calibrationMode){
+    calibrationPoints.push(p);
+    if(calibrationPoints.length===2){
+      const known=parseFloat($("knownDistance").value);
+      if(!(known>0)){
+        toast("Enter a known distance first.");
+        calibrationPoints=[];
+      }else{
+        pixelsPerUnit=distancePx(calibrationPoints[0],calibrationPoints[1])/known;
+        calibrationMode=false;
+        $("measureHint").textContent="Scale set. Now tap points for measurement.";
+        toast("Calibration set.");
+      }
+    }
+    drawMeasure(); return;
+  }
+  measurePoints.push(p);
+  applyMeasureResult();
+}
+function captureMeasure(){
+  if(!measureStream){toast("Start the camera first.");return;}
+  measureImage=captureVideoFrame($("measureVideo"));
+  const w=measureImage.width,h=measureImage.height;
+  const max=1200, ratio=Math.min(1,max/w);
+  measureCanvas.width=Math.round(w*ratio); measureCanvas.height=Math.round(h*ratio);
+  measureCtx=measureCanvas.getContext("2d");
+  measureImage.width=Math.round(w*ratio); measureImage.height=Math.round(h*ratio);
+  measurePoints=[]; calibrationPoints=[]; calibrationMode=false; pixelsPerUnit=null;
+  $("measureHint").textContent="Photo captured. Set calibration, then select points.";
+  applyMeasureResult();
+}
+function normalizeUnitValue(v,suffix){
+  return Number.isFinite(v) ? v : NaN;
+}
+
+$("measureCanvas").addEventListener("pointerup",handleMeasureTap);
+$("measureStartBtn").addEventListener("click",()=>startCamera("measure"));
+$("measureCaptureBtn").addEventListener("click",captureMeasure);
+$("measureSwitchBtn").addEventListener("click",()=>switchCamera("measure"));
+$("calibrateBtn").addEventListener("click",()=>{
+  if(!measureImage){toast("Capture a photo first.");return}
+  if(!(parseFloat($("knownDistance").value)>0)){toast("Enter the known distance.");return}
+  calibrationMode=true; calibrationPoints=[]; $("measureHint").textContent="Tap the two ends of the known distance."; drawMeasure();
+});
+$("measureMode").addEventListener("change",applyMeasureResult);
+$("measureUnit").addEventListener("change",applyMeasureResult);
+$("undoPointBtn").addEventListener("click",()=>{measurePoints.pop();applyMeasureResult()});
+$("clearPointsBtn").addEventListener("click",()=>{measurePoints=[];applyMeasureResult()});
+$("resetMeasureBtn").addEventListener("click",()=>{measurePoints=[];calibrationPoints=[];pixelsPerUnit=null;calibrationMode=false;applyMeasureResult();$("measureHint").textContent="Capture a view, then select points directly on the image."});
+
+function todayKey(){
+  const d=new Date();
+  return d.toISOString().slice(0,10);
+}
+function readHistory(){
+  try{
+    const x=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");
+    return Array.isArray(x)?x:[];
+  }catch(e){return []}
+}
+function writeHistory(items){localStorage.setItem(HISTORY_KEY,JSON.stringify(items))}
+function renderHistory(){
+  const list=$("historyList"), items=readHistory();
+  $("historyDays").textContent=items.length+" day"+(items.length===1?"":"s");
+  if(!items.length){list.innerHTML='<div class="empty">No daily results saved yet.</div>';return}
+  list.innerHTML="";
+  items.sort((a,b)=>b.date.localeCompare(a.date)).forEach(item=>{
+    const row=document.createElement("div"); row.className="hist-row";
+    row.innerHTML=`<div><div class="date">${item.date}</div><div class="meta">${escapeHtml(item.object)}</div></div><div class="hist-count">${item.count}</div>`;
+    list.appendChild(row);
+  });
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function upsertTodayCount(showToast=true){
+  const object=$("targetObject").value.trim()||"object";
+  const count=countDetections.length;
+  if(!count){if(showToast)toast("Nothing to save yet.");return false}
+  const items=readHistory();
+  const key=todayKey();
+  const existing=items.find(x=>x.date===key && x.object.toLowerCase()===object.toLowerCase());
+  if(existing){existing.count=count; existing.updatedAt=Date.now();}
+  else items.push({date:key,object,count,updatedAt:Date.now()});
+  writeHistory(items); renderHistory();
+  if(showToast)toast("Today's result saved.");
+  return true;
+}
+function saveTodayCount(){ upsertTodayCount(true); }
+$("clearHistoryBtn").addEventListener("click",()=>{writeHistory([]);renderHistory();toast("History cleared.")});
+
+async function ensureDetector(){
+  if(detector) return detector;
+  if(detectorLoading){toast("AI model is already loading.");return null}
+  detectorLoading=true;
+  $("modelStatus").textContent="Loading the AI model for object detection...";
+  $("modelProgress").style.width="18%";
+  try{
+    const canWebGPU=!!navigator.gpu;
+    const options=canWebGPU ? {device:"webgpu",dtype:"q4f16"} : {dtype:"q4"};
+    detector=await pipeline("zero-shot-object-detection","Xenova/owlvit-base-patch32",options);
+    $("modelProgress").style.width="100%";
+    $("modelStatus").textContent=canWebGPU ? "AI ready • WebGPU acceleration enabled." : "AI ready • browser CPU mode.";
+    $("loadAiBtn").textContent="AI counter ready";
+    toast("AI counter ready.");
+    return detector;
+  }catch(err){
+    $("modelProgress").style.width="0%";
+    $("modelStatus").textContent="AI model could not be loaded. Check your connection and try again.";
+    toast("AI model failed to load.");
+    return null;
+  }finally{detectorLoading=false}
+}
+function drawDetections(results){
+  const img=$("countImage"), canvas=$("countOverlay");
+  canvas.width=img.naturalWidth; canvas.height=img.naturalHeight;
+  const ctx=canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  results.forEach((r,i)=>{
+    const b=r.box;
+    ctx.strokeStyle="#ffdf5a"; ctx.lineWidth=Math.max(3,canvas.width/250); ctx.strokeRect(b.xmin,b.ymin,b.xmax-b.xmin,b.ymax-b.ymin);
+    const label=`${i+1}  ${(r.score*100).toFixed(0)}%`;
+    ctx.font=`800 ${Math.max(16,canvas.width/42)}px system-ui`;
+    const tw=ctx.measureText(label).width+14, th=Math.max(28,canvas.width/42+8);
+    ctx.fillStyle="rgba(0,0,0,.7)"; ctx.fillRect(b.xmin,Math.max(0,b.ymin-th),tw,th);
+    ctx.fillStyle="#fff"; ctx.fillText(label,b.xmin+7,Math.max(18,b.ymin-8));
+  });
+}
+async function scanCapturedImage(){
+  if(!countPhotoBlob){toast("Capture an image first.");return}
+  const object=$("targetObject").value.trim()||"object";
+  const pipe=await ensureDetector();
+  if(!pipe)return;
+  $("scanBadge").textContent="Scanning...";
+  try{
+    const img=$("countImage");
+    const labels=[object];
+    const results=await pipe(img,labels,{top_k:30,threshold:parseFloat($("countThreshold").value)});
+    countDetections=(Array.isArray(results)?results:[]).filter(r=>String(r.label).toLowerCase()===object.toLowerCase() || String(r.label).toLowerCase().includes(object.toLowerCase()));
+    drawDetections(countDetections);
+    $("todayCount").textContent=countDetections.length;
+    $("countLabel").textContent=`${object} detected`;
+    $("scanBadge").textContent=countDetections.length+" found";
+    upsertTodayCount(false);
+    toast(`${countDetections.length} ${object}${countDetections.length===1?"":"s"} detected.`);
+  }catch(err){
+    $("scanBadge").textContent="Scan error";
+    toast("Could not scan this image.");
+  }
+}
+async function captureCount(){
+  if(!countStream){toast("Start the camera first.");return}
+  const c=captureVideoFrame($("countVideo"));
+  const blob=await new Promise(res=>c.toBlob(res,"image/jpeg",.92));
+  countPhotoBlob=blob;
+  const url=URL.createObjectURL(blob);
+  $("countImage").src=url;
+  $("countCapturePanel").classList.add("active");
+  countDetections=[]; $("countOverlay").width=c.width; $("countOverlay").height=c.height; $("countOverlay").getContext("2d").clearRect(0,0,c.width,c.height);
+  $("todayCount").textContent="0"; $("scanBadge").textContent="Ready to scan";
+  $("countImage").onload=()=>URL.revokeObjectURL(url);
+}
+$("countStartBtn").addEventListener("click",()=>startCamera("count"));
+$("countCaptureBtn").addEventListener("click",captureCount);
+$("countSwitchBtn").addEventListener("click",()=>switchCamera("count"));
+$("loadAiBtn").addEventListener("click",ensureDetector);
+$("scanImageBtn").addEventListener("click",scanCapturedImage);
+$("saveCountBtn").addEventListener("click",saveTodayCount);
+
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");
+    $("screen-"+btn.dataset.tab).classList.add("active");
+  });
+});
+
+$("helpBtn").addEventListener("click",()=>$("helpModal").classList.add("open"));
+$("closeHelpBtn").addEventListener("click",()=>$("helpModal").classList.remove("open"));
+$("helpModal").addEventListener("click",e=>{if(e.target===$("helpModal"))$("helpModal").classList.remove("open")});
+
+window.addEventListener("pagehide",()=>{
+  stopStream("measure"); stopStream("count");
+});
+renderHistory();
+drawMeasure();
+</script>
+</body>
+</html>
