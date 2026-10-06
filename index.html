@@ -21,20 +21,6 @@
   .brand h1{font-size:21px;margin:0;font-weight:750;letter-spacing:-.03em}
   .brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
   .header-actions{display:flex;gap:8px}
-  .balance-card{background:#111;color:#fff;border-color:#111}
-  .balance-card .mini-muted{color:#bcbcbc}
-  .balance-card .link-btn{color:#fff}
-  .balance-value{font-size:28px;font-weight:800;letter-spacing:-.04em;margin:4px 0 8px}
-  .balance-meta{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#bcbcbc}
-  .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-  .quick-btn{border:1px solid #ddd;background:#fff;color:#111;border-radius:11px;padding:10px 5px;font-size:11px;font-weight:750}
-  .quick-btn:active{background:#ededed}
-  .filter-row{display:flex;gap:6px;overflow-x:auto;padding:1px 0 8px;scrollbar-width:none}
-  .filter-row::-webkit-scrollbar{display:none}
-  .filter-btn{flex:0 0 auto;border:1px solid #ddd;background:#fff;color:#666;border-radius:999px;padding:7px 10px;font-size:10px}
-  .filter-btn.active{background:#111;color:#fff;border-color:#111}
-  .backup-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-  .backup-note{margin-top:12px;line-height:1.45}
   .mini-muted{font-size:10px;color:var(--muted);margin-top:3px}
   .budget-card{overflow:hidden}
   .budget-amount-row{display:flex;align-items:baseline;justify-content:space-between;margin:5px 0 9px}
@@ -180,12 +166,6 @@
       <div><h1>Daily Spend</h1><p>Simple, clear expense tracking</p></div>
     </div>
     <div class="header-actions">
-      <button class="icon-btn" id="balanceBtn" title="Income & balance">
-        <svg viewBox="0 0 24 24"><path d="M4 6h16v13H4z"/><path d="M8 10h8M8 14h5"/></svg>
-      </button>
-      <button class="icon-btn" id="backupBtn" title="Backup & restore">
-        <svg viewBox="0 0 24 24"><path d="M12 3v11m0-11 4 4m-4-4L8 7"/><path d="M5 13v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6"/></svg>
-      </button>
       <button class="icon-btn" id="upiBtn" title="UPI">
         <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="M8 10h8M8 14h4"/><path d="m15 16 2-2 2 2"/></svg>
       </button>
@@ -207,36 +187,6 @@
           <div class="stat"><span>This month</span><strong id="monthTotal">₹0</strong></div>
           <div class="stat"><span>Today</span><strong id="todayCount">0 items</strong></div>
           <div class="stat"><span>This week</span><strong id="weekTotal">₹0</strong></div>
-        </div>
-      </div>
-
-      <div class="card balance-card">
-        <div class="section-head">
-          <div>
-            <h2>Available balance</h2>
-            <div class="mini-muted" id="balanceLabel">Set income to track your balance</div>
-          </div>
-          <button class="link-btn" id="setIncomeBtn">Set income</button>
-        </div>
-        <div class="balance-value" id="balanceValue">₹0</div>
-        <div class="balance-meta">
-          <span id="incomeValue">Income ₹0</span>
-          <span id="spentValue">Spent ₹0</span>
-        </div>
-      </div>
-
-      <div class="card quick-card">
-        <div class="section-head">
-          <div>
-            <h2>Quick add</h2>
-            <div class="mini-muted">Add common expenses in one tap.</div>
-          </div>
-        </div>
-        <div class="quick-grid">
-          <button class="quick-btn" data-quick-name="Tea" data-quick-cat="Tea" data-quick-amount="10">Tea ₹10</button>
-          <button class="quick-btn" data-quick-name="Food" data-quick-cat="Food" data-quick-amount="50">Food ₹50</button>
-          <button class="quick-btn" data-quick-name="Travel" data-quick-cat="Travel" data-quick-amount="30">Travel ₹30</button>
-          <button class="quick-btn" data-quick-name="Other" data-quick-cat="Other" data-quick-amount="100">Other ₹100</button>
         </div>
       </div>
 
@@ -306,24 +256,6 @@
           </button>
         </div>
         <input class="search" id="searchInput" placeholder="Search expenses..." />
-        <div class="filter-row" id="categoryFilters">
-          <button class="filter-btn active" data-category-filter="all">All</button>
-          <button class="filter-btn" data-category-filter="Food">Food</button>
-          <button class="filter-btn" data-category-filter="Tea">Tea</button>
-          <button class="filter-btn" data-category-filter="Travel">Travel</button>
-          <button class="filter-btn" data-category-filter="Shopping">Shopping</button>
-          <button class="filter-btn" data-category-filter="Bills">Bills</button>
-          <button class="filter-btn" data-category-filter="Health">Health</button>
-          <button class="filter-btn" data-category-filter="Recharge">Recharge</button>
-          <button class="filter-btn" data-category-filter="Other">Other</button>
-        </div>
-        <div class="filter-row" id="paymentFilters">
-          <button class="filter-btn active" data-payment-filter="all">All payments</button>
-          <button class="filter-btn" data-payment-filter="Cash">Cash</button>
-          <button class="filter-btn" data-payment-filter="UPI">UPI</button>
-          <button class="filter-btn" data-payment-filter="Card">Card</button>
-          <button class="filter-btn" data-payment-filter="Bank transfer">Bank</button>
-        </div>
         <div id="historyList"></div>
       </div>
     </section>
@@ -415,47 +347,6 @@
 </div>
 
 
-
-
-<div class="modal" id="incomeModal" aria-hidden="true">
-  <div class="sheet popup-sheet app-dialog-sheet">
-    <div class="sheet-head">
-      <h2>Monthly income</h2>
-      <button class="icon-btn" id="closeIncome" type="button">
-        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
-      </button>
-    </div>
-    <div class="app-dialog-message">Set your income for the current month. The app will subtract your expenses and show the remaining balance.</div>
-    <div class="field">
-      <label for="incomeInput">Income (₹)</label>
-      <input type="number" id="incomeInput" min="0" step="1" inputmode="decimal" placeholder="25000">
-    </div>
-    <div class="app-dialog-actions">
-      <button class="cancel-btn" id="clearIncomeBtn" type="button">Remove</button>
-      <button class="save-btn" id="saveIncomeBtn" type="button">Save income</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal" id="backupModal" aria-hidden="true">
-  <div class="sheet popup-sheet app-dialog-sheet">
-    <div class="sheet-head">
-      <div>
-        <h2>Backup & restore</h2>
-        <div class="mini-muted">Keep your data safe on this device.</div>
-      </div>
-      <button class="icon-btn" id="closeBackup" type="button">
-        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
-      </button>
-    </div>
-    <div class="backup-actions">
-      <button class="save-btn" type="button" id="downloadBackupBtn">Download backup</button>
-      <button class="cancel-btn" type="button" id="restoreBackupBtn">Restore backup</button>
-    </div>
-    <input type="file" id="restoreBackupInput" accept=".json,application/json" hidden>
-    <div class="mini-muted backup-note">A restore replaces your saved expenses, budget, income, and saved shop details.</div>
-  </div>
-</div>
 
 <div class="modal" id="qrScannerModal" aria-hidden="true">
   <div class="sheet popup-sheet qr-scanner-sheet">
@@ -667,14 +558,11 @@
   const BUDGET_KEY = "daily_spend_monthly_budget_v1";
   const MY_UPI_KEY = "daily_spend_my_upi_v1";
   const SAVED_SHOPS_KEY = "daily_spend_saved_shops_v1";
-  const INCOME_KEY = "daily_spend_monthly_income_v1";
   const $ = (id) => document.getElementById(id);
   let expenses = loadExpenses();
   let pendingUpiRecord = null;
   let qrStream = null;
   let qrScanTimer = null;
-  let selectedCategoryFilter = "all";
-  let selectedPaymentFilter = "all";
 
   function loadExpenses() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
@@ -1016,9 +904,6 @@
     closePaymentPicker();
     closeBudgetModal();
     closeUpiModal();
-    closeIncomeModal();
-    $("backupModal").classList.remove("open");
-    $("backupModal").setAttribute("aria-hidden","true");
     closeAppDialog();
     $("expenseModal").classList.remove("open");
     $("expenseForm").reset();
@@ -1091,29 +976,6 @@
     }
   }
 
-
-
-  function getMonthlyIncome() {
-    const n = Number(localStorage.getItem(INCOME_KEY) || 0);
-    return Number.isFinite(n) && n > 0 ? n : 0;
-  }
-
-  function setMonthlyIncome(value) {
-    const n = Number(value);
-    if (Number.isFinite(n) && n > 0) localStorage.setItem(INCOME_KEY, String(n));
-    else localStorage.removeItem(INCOME_KEY);
-  }
-
-  function openIncomeModal() {
-    $("incomeInput").value = getMonthlyIncome() || "";
-    $("incomeModal").classList.add("open");
-    $("incomeModal").setAttribute("aria-hidden","false");
-  }
-
-  function closeIncomeModal() {
-    $("incomeModal").classList.remove("open");
-    $("incomeModal").setAttribute("aria-hidden","true");
-  }
 
   function getMonthlyBudget() {
     const value = Number(localStorage.getItem(BUDGET_KEY) || 0);
@@ -1192,17 +1054,6 @@
     $("budgetModal").setAttribute("aria-hidden","true");
   }
 
-
-  function renderBalance() {
-    const income = getMonthlyIncome();
-    const spent = monthExpenses(currentMonthKey()).reduce((s,e)=>s+Number(e.amount),0);
-    const balance = income - spent;
-    $("balanceValue").textContent = money(balance);
-    $("incomeValue").textContent = `Income ${money(income)}`;
-    $("spentValue").textContent = `Spent ${money(spent)}`;
-    $("balanceLabel").textContent = income ? `Current month · ${monthLabel(currentMonthKey())}` : "Set income to track your balance";
-  }
-
   function renderHome() {
     const t = totals();
     const today = filteredForToday();
@@ -1212,7 +1063,6 @@
     $("todayCount").textContent = `${today.length} ${today.length===1 ? "item" : "items"}`;
     $("todayLabel").textContent = `Today · ${niceDate(dateKey())}`;
     renderBudgetAndInsights();
-    renderBalance();
 
     if (!today.length) {
       $("todayList").innerHTML = '<div class="empty">No expenses recorded today.</div>';
@@ -1247,12 +1097,7 @@
 
     const q = $("searchInput").value.trim().toLowerCase();
     const chosen = monthInput.value;
-    let list = expenses.filter(e=>{
-      const text = `${e.name} ${e.category} ${e.note||""} ${e.paymentMethod||"Cash"}`.toLowerCase();
-      const categoryOk = selectedCategoryFilter === "all" || (e.category || "Other") === selectedCategoryFilter;
-      const paymentOk = selectedPaymentFilter === "all" || (e.paymentMethod || "Cash") === selectedPaymentFilter;
-      return e.date.startsWith(chosen) && (!q || text.includes(q)) && categoryOk && paymentOk;
-    });
+    let list = expenses.filter(e=>e.date.startsWith(chosen) && (!q || `${e.name} ${e.category} ${e.note||""}`.toLowerCase().includes(q)));
     list.sort((a,b)=>b.date.localeCompare(a.date) || b.createdAt-a.createdAt);
 
     const groups = {};
@@ -1539,129 +1384,6 @@
     if (document.visibilityState === "visible" && document.body.dataset.upiPending === "1") {
       setTimeout(handleUpiReturn, 250);
     }
-  });
-
-
-  $("balanceBtn").addEventListener("click", openIncomeModal);
-  $("setIncomeBtn").addEventListener("click", openIncomeModal);
-  $("closeIncome").addEventListener("click", closeIncomeModal);
-  $("incomeModal").addEventListener("click", e=>{ if(e.target===e.currentTarget) closeIncomeModal(); });
-
-  $("saveIncomeBtn").addEventListener("click", ()=>{
-    const value = Number($("incomeInput").value);
-    if(!Number.isFinite(value) || value <= 0) {
-      showAppDialog("Invalid income","Enter an income amount greater than zero.","OK");
-      return;
-    }
-    setMonthlyIncome(value);
-    closeIncomeModal();
-    renderHome();
-  });
-
-  $("clearIncomeBtn").addEventListener("click", ()=>{
-    setMonthlyIncome(0);
-    closeIncomeModal();
-    renderHome();
-  });
-
-  $("backupBtn").addEventListener("click", ()=>{
-    $("backupModal").classList.add("open");
-    $("backupModal").setAttribute("aria-hidden","false");
-  });
-
-  $("closeBackup").addEventListener("click", ()=>{
-    $("backupModal").classList.remove("open");
-    $("backupModal").setAttribute("aria-hidden","true");
-  });
-
-  $("backupModal").addEventListener("click", e=>{
-    if(e.target===e.currentTarget) {
-      $("backupModal").classList.remove("open");
-      $("backupModal").setAttribute("aria-hidden","true");
-    }
-  });
-
-  $("downloadBackupBtn").addEventListener("click", ()=>{
-    const data = {
-      version: 2,
-      exportedAt: new Date().toISOString(),
-      expenses,
-      budget: getMonthlyBudget(),
-      income: getMonthlyIncome(),
-      savedShops: loadSavedShops()
-    };
-    const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `daily-spend-backup-${dateKey()}.json`;
-    a.click();
-    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-  });
-
-  $("restoreBackupBtn").addEventListener("click", ()=>$("restoreBackupInput").click());
-
-  $("restoreBackupInput").addEventListener("change", async e=>{
-    const file = e.target.files?.[0];
-    if(!file) return;
-    try {
-      const data = JSON.parse(await file.text());
-      if(!data || !Array.isArray(data.expenses)) throw new Error("Invalid backup");
-      showAppDialog(
-        "Restore backup",
-        `Restore ${data.expenses.length} expenses? Your current saved data will be replaced.`,
-        "Restore",
-        "Cancel",
-        ()=>{
-          expenses = data.expenses;
-          saveExpenses();
-          setMonthlyBudget(Number(data.budget) || 0);
-          setMonthlyIncome(Number(data.income) || 0);
-          if(Array.isArray(data.savedShops)) {
-            localStorage.setItem(SAVED_SHOPS_KEY, JSON.stringify(data.savedShops.slice(0,20)));
-          }
-          renderHome();
-          renderHistory();
-        }
-      );
-    } catch (_) {
-      showAppDialog("Invalid backup","This file is not a valid Daily Spend backup.","OK");
-    }
-    e.target.value="";
-  });
-
-  document.querySelectorAll("[data-category-filter]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      selectedCategoryFilter = btn.dataset.categoryFilter;
-      document.querySelectorAll("[data-category-filter]").forEach(b=>b.classList.toggle("active",b===btn));
-      renderHistory();
-    });
-  });
-
-  document.querySelectorAll("[data-payment-filter]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      selectedPaymentFilter = btn.dataset.paymentFilter;
-      document.querySelectorAll("[data-payment-filter]").forEach(b=>b.classList.toggle("active",b===btn));
-      renderHistory();
-    });
-  });
-
-  document.querySelectorAll("[data-quick-cat]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const item = {
-        id: crypto.randomUUID(),
-        date: dateKey(),
-        amount: Number(btn.dataset.quickAmount),
-        name: btn.dataset.quickName,
-        category: btn.dataset.quickCat,
-        paymentMethod: "Cash",
-        note: "Quick add",
-        createdAt: Date.now()
-      };
-      expenses = [item,...expenses];
-      saveExpenses();
-      renderHome();
-      renderHistory();
-    });
   });
 
   $("addBtn").onclick = () => openModal();
@@ -2258,7 +1980,6 @@
   $("monthPickerValue").textContent = monthLabel($("monthSelect").value);
   renderHome();
   renderHistory();
-  renderBalance();
 })();
 </script>
 </body>
