@@ -20,6 +20,43 @@
   .brand-mark{width:42px;height:42px;border:1.5px solid #111;border-radius:13px;display:grid;place-items:center;background:#fff}
   .brand h1{font-size:21px;margin:0;font-weight:750;letter-spacing:-.03em}
   .brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
+  .header-actions{display:flex;gap:8px}
+  .balance-card{background:#111;color:#fff;border-color:#111}
+  .balance-card .mini-muted{color:#bcbcbc}
+  .balance-card .link-btn{color:#fff}
+  .balance-value{font-size:28px;font-weight:800;letter-spacing:-.04em;margin:4px 0 8px}
+  .balance-meta{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#bcbcbc}
+  .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+  .quick-btn{border:1px solid #ddd;background:#fff;color:#111;border-radius:11px;padding:10px 5px;font-size:11px;font-weight:750}
+  .quick-btn:active{background:#ededed}
+  .filter-row{display:flex;gap:6px;overflow-x:auto;padding:1px 0 8px;scrollbar-width:none}
+  .filter-row::-webkit-scrollbar{display:none}
+  .filter-btn{flex:0 0 auto;border:1px solid #ddd;background:#fff;color:#666;border-radius:999px;padding:7px 10px;font-size:10px}
+  .filter-btn.active{background:#111;color:#fff;border-color:#111}
+  .backup-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .backup-note{margin-top:12px;line-height:1.45}
+  .mini-muted{font-size:10px;color:var(--muted);margin-top:3px}
+  .budget-card{overflow:hidden}
+  .budget-amount-row{display:flex;align-items:baseline;justify-content:space-between;margin:5px 0 9px}
+  .budget-amount-row strong{font-size:22px;letter-spacing:-.03em}
+  .budget-amount-row span{font-size:11px;color:var(--muted)}
+  .budget-track{height:9px;background:#ececec;border-radius:999px;overflow:hidden}
+  .budget-fill{height:100%;width:0;background:#111;border-radius:999px;transition:width .2s ease}
+  .budget-meta{display:flex;justify-content:space-between;gap:10px;margin-top:8px;font-size:10px;color:var(--muted)}
+  .budget-meta span:last-child{font-weight:800;color:#111}
+  .insight-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:5px 0 12px}
+  .insight-stats div{border:1px solid #e2e2e2;border-radius:12px;padding:10px}
+  .insight-stats span{display:block;font-size:10px;color:var(--muted)}
+  .insight-stats strong{display:block;font-size:13px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .breakdown-row{display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:9px;padding:9px 0;border-top:1px solid #eee}
+  .breakdown-icon{width:30px;height:30px;border:1px solid #111;border-radius:9px;display:grid;place-items:center;background:#fff}
+  .breakdown-info{min-width:0}
+  .breakdown-info strong{display:block;font-size:11px}
+  .breakdown-info small{display:block;color:var(--muted);font-size:9px;margin-top:2px}
+  .breakdown-bar{height:5px;background:#ededed;border-radius:999px;overflow:hidden;margin-top:5px}
+  .breakdown-bar span{display:block;height:100%;background:#111;border-radius:999px}
+  .breakdown-amount{font-size:11px;font-weight:800}
+  .budget-form-copy{font-size:13px;color:#555;line-height:1.45}
   .icon-btn{width:42px;height:42px;border:1px solid var(--line);background:#fff;border-radius:12px;display:grid;place-items:center}
   svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
   .hero{background:#111;color:#fff;border-radius:22px;padding:22px;box-shadow:var(--shadow);margin-bottom:15px}
@@ -47,6 +84,7 @@
   nav button.active{color:#111;font-weight:700}
   .view{display:none}.view.active{display:block}
   .date-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .history-head-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .date-title{font-size:18px;font-weight:800;letter-spacing:-.02em}
   .today-btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px 10px;font-size:11px}
   .month-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
@@ -64,6 +102,38 @@
   .field label{font-size:11px;font-weight:700}
   .date-picker-btn{width:100%;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;outline:none;text-align:left}
   .date-picker-btn svg{width:17px;height:17px}
+  .upi-action-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid #111;background:#fff;color:#111;border-radius:13px;padding:12px;font-weight:750;margin-top:14px}
+  .upi-action-btn:active{background:#f0f0f0}
+  .upi-action-btn svg{width:18px;height:18px}
+  #upiModal{z-index:1250}
+  .upi-scan-panel{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #ddd;border-radius:14px;padding:11px 12px;background:#fff}
+  .upi-scan-panel strong{font-size:12px;display:block}
+  .upi-scan-panel .mini-muted{max-width:250px}
+  .upi-scan-panel .save-btn{display:flex;align-items:center;justify-content:center;gap:6px}
+  .upi-scan-panel .save-btn svg{width:17px;height:17px}
+  #qrScannerModal{z-index:1400}
+  #savedShopsModal{z-index:1350}
+  .qr-scanner-sheet{padding-bottom:calc(18px + env(safe-area-inset-bottom))}
+  .scanner-box{position:relative;background:#111;border-radius:18px;overflow:hidden;min-height:310px}
+  #qrVideo{display:block;width:100%;height:310px;object-fit:cover;background:#111}
+  .scanner-frame{position:absolute;left:50%;top:50%;width:210px;height:210px;transform:translate(-50%,-50%);pointer-events:none}
+  .scanner-frame span{position:absolute;width:28px;height:28px;border-color:#fff;border-style:solid}
+  .scanner-frame span:nth-child(1){left:0;top:0;border-width:3px 0 0 3px}
+  .scanner-frame span:nth-child(2){right:0;top:0;border-width:3px 3px 0 0}
+  .scanner-frame span:nth-child(3){left:0;bottom:0;border-width:0 0 3px 3px}
+  .scanner-frame span:nth-child(4){right:0;bottom:0;border-width:0 3px 3px 0}
+  .scanner-status{position:absolute;left:10px;right:10px;bottom:10px;padding:8px 10px;background:rgba(17,17,17,.88);color:#fff;border-radius:10px;text-align:center;font-size:11px}
+  .scanner-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .scanner-actions button{display:flex;align-items:center;justify-content:center;gap:6px}
+  .scanner-actions button svg{width:17px;height:17px}
+  .uploaded-image-preview{position:relative;margin-top:10px;border:1px solid #ddd;border-radius:14px;overflow:hidden;background:#f4f4f4}
+  .uploaded-image-preview img{display:block;width:100%;max-height:230px;object-fit:contain;background:#f4f4f4}
+  .uploaded-image-preview .icon-btn{position:absolute;top:8px;right:8px;background:#fff}
+  .saved-shop-main{display:flex;align-items:center;gap:10px;min-width:0}
+  .saved-shop-icon{width:34px;height:34px;border:1px solid #111;border-radius:10px;display:grid;place-items:center;flex:0 0 34px}
+  .saved-shop-text{min-width:0}
+  .saved-shop-text strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .saved-shop-text small{display:block;font-size:10px;color:var(--muted);margin-top:2px}
   .category-picker-btn{width:100%;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;color:#111;outline:none;text-align:left}
   .category-picker-btn svg{width:17px;height:17px}
   .category-sheet{padding-bottom:calc(18px + env(safe-area-inset-bottom));z-index:1200}
@@ -109,20 +179,64 @@
       </div>
       <div><h1>Daily Spend</h1><p>Simple, clear expense tracking</p></div>
     </div>
-    <button class="icon-btn" id="exportBtn" title="Export">
-      <svg viewBox="0 0 24 24"><path d="M12 3v12m0-12 4 4m-4-4L8 7"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
-    </button>
+    <div class="header-actions">
+      <button class="icon-btn" id="balanceBtn" title="Income & balance">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16v13H4z"/><path d="M8 10h8M8 14h5"/></svg>
+      </button>
+      <button class="icon-btn" id="backupBtn" title="Backup & restore">
+        <svg viewBox="0 0 24 24"><path d="M12 3v11m0-11 4 4m-4-4L8 7"/><path d="M5 13v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6"/></svg>
+      </button>
+      <button class="icon-btn" id="upiBtn" title="UPI">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="M8 10h8M8 14h4"/><path d="m15 16 2-2 2 2"/></svg>
+      </button>
+      <button class="icon-btn" id="budgetBtn" title="Monthly budget">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16v13H4z"/><path d="M8 3v3M16 3v3M8 10h8M8 14h5"/></svg>
+      </button>
+      <button class="icon-btn" id="exportBtn" title="Export PDF">
+        <svg viewBox="0 0 24 24"><path d="M12 3v12m0-12 4 4m-4-4L8 7"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+      </button>
+    </div>
   </header>
 
   <main>
     <section class="view active" id="homeView">
       <div class="hero">
-        <div class="label">Today's expenses</div>
+        <div class="label">This month's expenses</div>
         <div class="amount" id="todayTotal">₹0</div>
         <div class="stats">
+          <div class="stat"><span>This month</span><strong id="monthTotal">₹0</strong></div>
           <div class="stat"><span>Today</span><strong id="todayCount">0 items</strong></div>
           <div class="stat"><span>This week</span><strong id="weekTotal">₹0</strong></div>
-          <div class="stat"><span>This month</span><strong id="monthTotal">₹0</strong></div>
+        </div>
+      </div>
+
+      <div class="card balance-card">
+        <div class="section-head">
+          <div>
+            <h2>Available balance</h2>
+            <div class="mini-muted" id="balanceLabel">Set income to track your balance</div>
+          </div>
+          <button class="link-btn" id="setIncomeBtn">Set income</button>
+        </div>
+        <div class="balance-value" id="balanceValue">₹0</div>
+        <div class="balance-meta">
+          <span id="incomeValue">Income ₹0</span>
+          <span id="spentValue">Spent ₹0</span>
+        </div>
+      </div>
+
+      <div class="card quick-card">
+        <div class="section-head">
+          <div>
+            <h2>Quick add</h2>
+            <div class="mini-muted">Add common expenses in one tap.</div>
+          </div>
+        </div>
+        <div class="quick-grid">
+          <button class="quick-btn" data-quick-name="Tea" data-quick-cat="Tea" data-quick-amount="10">Tea ₹10</button>
+          <button class="quick-btn" data-quick-name="Food" data-quick-cat="Food" data-quick-amount="50">Food ₹50</button>
+          <button class="quick-btn" data-quick-name="Travel" data-quick-cat="Travel" data-quick-amount="30">Travel ₹30</button>
+          <button class="quick-btn" data-quick-name="Other" data-quick-cat="Other" data-quick-amount="100">Other ₹100</button>
         </div>
       </div>
 
@@ -132,6 +246,41 @@
           <button class="link-btn" id="seeAllBtn">See all</button>
         </div>
         <div id="todayList"></div>
+      </div>
+
+      <div class="card budget-card">
+        <div class="section-head">
+          <div>
+            <h2>This month</h2>
+            <div class="mini-muted" id="budgetLabel">No budget set</div>
+          </div>
+          <button class="link-btn" id="setBudgetBtn">Set budget</button>
+        </div>
+        <div class="budget-amount-row">
+          <strong id="budgetSpent">₹0</strong>
+          <span id="budgetLimit">of ₹0</span>
+        </div>
+        <div class="budget-track"><div class="budget-fill" id="budgetFill"></div></div>
+        <div class="budget-meta">
+          <span id="budgetRemaining">Set a monthly budget to track your limit</span>
+          <span id="budgetPercent">0%</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <h2>Spending insights</h2>
+            <div class="mini-muted" id="insightSummary">Category breakdown for this month</div>
+          </div>
+          <button class="link-btn" id="monthInsightsBtn">This month</button>
+        </div>
+        <div class="insight-stats">
+          <div><span>Entries</span><strong id="insightEntries">0</strong></div>
+          <div><span>Average/day</span><strong id="insightAverage">₹0</strong></div>
+          <div><span>Top category</span><strong id="insightTopCategory">—</strong></div>
+        </div>
+        <div id="categoryBreakdown"></div>
       </div>
 
       <button class="fab" id="addBtn">
@@ -144,7 +293,10 @@
       <div class="card">
         <div class="date-row">
           <div><div class="date-title">Expense history</div><div id="historySub" style="color:#6d6d6d;font-size:11px;margin-top:3px"></div></div>
-          <button class="today-btn" id="goTodayBtn">This month</button>
+          <div class="history-head-actions">
+            <button class="today-btn" id="clearAllBtn">Clear all</button>
+            <button class="today-btn" id="goTodayBtn">This month</button>
+          </div>
         </div>
         <div class="month-row">
           <input type="hidden" id="monthSelect">
@@ -154,6 +306,24 @@
           </button>
         </div>
         <input class="search" id="searchInput" placeholder="Search expenses..." />
+        <div class="filter-row" id="categoryFilters">
+          <button class="filter-btn active" data-category-filter="all">All</button>
+          <button class="filter-btn" data-category-filter="Food">Food</button>
+          <button class="filter-btn" data-category-filter="Tea">Tea</button>
+          <button class="filter-btn" data-category-filter="Travel">Travel</button>
+          <button class="filter-btn" data-category-filter="Shopping">Shopping</button>
+          <button class="filter-btn" data-category-filter="Bills">Bills</button>
+          <button class="filter-btn" data-category-filter="Health">Health</button>
+          <button class="filter-btn" data-category-filter="Recharge">Recharge</button>
+          <button class="filter-btn" data-category-filter="Other">Other</button>
+        </div>
+        <div class="filter-row" id="paymentFilters">
+          <button class="filter-btn active" data-payment-filter="all">All payments</button>
+          <button class="filter-btn" data-payment-filter="Cash">Cash</button>
+          <button class="filter-btn" data-payment-filter="UPI">UPI</button>
+          <button class="filter-btn" data-payment-filter="Card">Card</button>
+          <button class="filter-btn" data-payment-filter="Bank transfer">Bank</button>
+        </div>
         <div id="historyList"></div>
       </div>
     </section>
@@ -210,6 +380,198 @@
   </div>
 </div>
 
+
+
+<div class="modal" id="paymentModal" aria-hidden="true">
+  <div class="sheet popup-sheet">
+    <div class="sheet-head">
+      <h2>Select payment method</h2>
+      <button class="icon-btn" id="closePayment" type="button">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="popup-list" id="paymentOptions"></div>
+  </div>
+</div>
+
+<div class="modal" id="budgetModal" aria-hidden="true">
+  <div class="sheet popup-sheet app-dialog-sheet">
+    <div class="sheet-head">
+      <h2>Monthly budget</h2>
+      <button class="icon-btn" id="closeBudget" type="button">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="budget-form-copy">Set the maximum amount you plan to spend each month.</div>
+    <div class="field" style="margin-top:12px">
+      <label for="budgetInput">Budget amount (₹)</label>
+      <input type="number" id="budgetInput" min="0" step="1" inputmode="decimal" placeholder="e.g. 10000">
+    </div>
+    <div class="app-dialog-actions">
+      <button class="cancel-btn" id="clearBudgetBtn" type="button">Remove budget</button>
+      <button class="save-btn" id="saveBudgetBtn" type="button">Save budget</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal" id="incomeModal" aria-hidden="true">
+  <div class="sheet popup-sheet app-dialog-sheet">
+    <div class="sheet-head">
+      <h2>Monthly income</h2>
+      <button class="icon-btn" id="closeIncome" type="button">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="app-dialog-message">Set your income for the current month. The app will subtract your expenses and show the remaining balance.</div>
+    <div class="field">
+      <label for="incomeInput">Income (₹)</label>
+      <input type="number" id="incomeInput" min="0" step="1" inputmode="decimal" placeholder="25000">
+    </div>
+    <div class="app-dialog-actions">
+      <button class="cancel-btn" id="clearIncomeBtn" type="button">Remove</button>
+      <button class="save-btn" id="saveIncomeBtn" type="button">Save income</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="backupModal" aria-hidden="true">
+  <div class="sheet popup-sheet app-dialog-sheet">
+    <div class="sheet-head">
+      <div>
+        <h2>Backup & restore</h2>
+        <div class="mini-muted">Keep your data safe on this device.</div>
+      </div>
+      <button class="icon-btn" id="closeBackup" type="button">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="backup-actions">
+      <button class="save-btn" type="button" id="downloadBackupBtn">Download backup</button>
+      <button class="cancel-btn" type="button" id="restoreBackupBtn">Restore backup</button>
+    </div>
+    <input type="file" id="restoreBackupInput" accept=".json,application/json" hidden>
+    <div class="mini-muted backup-note">A restore replaces your saved expenses, budget, income, and saved shop details.</div>
+  </div>
+</div>
+
+<div class="modal" id="qrScannerModal" aria-hidden="true">
+  <div class="sheet popup-sheet qr-scanner-sheet">
+    <div class="sheet-head">
+      <div>
+        <h2>Scan shop QR</h2>
+        <div class="mini-muted">Allow camera access and place the UPI QR inside the frame.</div>
+      </div>
+      <button class="icon-btn" id="closeQrScanner" type="button">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="scanner-box">
+      <video id="qrVideo" playsinline muted></video>
+      <div class="scanner-frame">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div class="scanner-status" id="scannerStatus">Starting scanner…</div>
+    </div>
+
+    <div class="scanner-actions">
+      <button class="cancel-btn" type="button" id="uploadImageBtn">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><circle cx="9" cy="10" r="2"/><path d="m20 16-5-5-7 7"/></svg>
+        Upload image
+      </button>
+      <button class="save-btn" type="button" id="chooseQrImageBtn">
+        <svg viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M8 8h3v3H8zM13 13h3v3h-3z"/></svg>
+        Upload QR
+      </button>
+    </div>
+    <button class="save-btn" type="button" id="startQrBtn" style="margin-top:8px">
+      Start scanner
+    </button>
+
+    <input type="file" id="imageInput" accept="image/*" hidden>
+    <input type="file" id="qrImageInput" accept="image/*" hidden>
+    <div class="uploaded-image-preview" id="uploadedImagePreview" hidden>
+      <img id="uploadedImage" alt="Uploaded image preview">
+      <button type="button" class="icon-btn" id="clearUploadedImage" title="Remove image">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="savedShopsModal" aria-hidden="true">
+  <div class="sheet popup-sheet">
+    <div class="sheet-head">
+      <div>
+        <h2>Saved shops</h2>
+        <div class="mini-muted">Previously scanned payees are kept here.</div>
+      </div>
+      <button class="icon-btn" id="closeSavedShops" type="button">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="popup-list" id="savedShopOptions"></div>
+  </div>
+</div>
+
+<div class="modal" id="upiModal" aria-hidden="true">
+  <div class="sheet popup-sheet">
+    <div class="sheet-head">
+      <div>
+        <h2>UPI</h2>
+        <div class="mini-muted">Link your UPI ID and pay from this app.</div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="savedShopsBtn" type="button" title="Saved shops">
+          <svg viewBox="0 0 24 24"><path d="M5 5h14v16l-7-3-7 3V5Z"/><path d="M8 9h8M8 12h6"/></svg>
+        </button>
+        <button class="icon-btn" id="closeUpi" type="button">
+          <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="myUpiId">My UPI ID</label>
+      <input type="text" id="myUpiId" inputmode="email" autocomplete="off" placeholder="yourname@upi">
+      <div class="mini-muted">Saved only in this app as a reference. Your bank account and UPI PIN are never requested.</div>
+    </div>
+
+    <div class="upi-scan-panel">
+      <div>
+        <strong>Scan shop QR</strong>
+        <div class="mini-muted">Scan the shop's UPI QR to fill Payee Name and UPI ID automatically.</div>
+      </div>
+      <button class="save-btn" type="button" id="scanShopQrBtn" style="margin:0;width:auto;padding:10px 14px">
+        <svg viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M8 8h3v3H8zM13 13h3v3h-3z"/></svg>
+        Scan
+      </button>
+    </div>
+
+    <div class="field" style="margin-top:12px">
+      <label for="payeeUpiId">Payee UPI ID</label>
+      <input type="text" id="payeeUpiId" inputmode="email" autocomplete="off" placeholder="shop@upi">
+    </div>
+
+    <div class="field" style="margin-top:12px">
+      <label for="payeeName">Payee name</label>
+      <input type="text" id="payeeName" maxlength="80" autocomplete="off" placeholder="Shop / person">
+    </div>
+
+    <div class="field" style="margin-top:12px">
+      <label for="upiPayAmount">Amount (₹)</label>
+      <input type="number" id="upiPayAmount" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00">
+    </div>
+
+    <button class="save-btn" type="button" id="launchUpiBtn" style="margin-top:14px">
+      Pay with UPI app
+    </button>
+    <button class="cancel-btn" type="button" id="upiCancelBtn">Cancel</button>
+  </div>
+</div>
 
 <div class="modal" id="monthModal" aria-hidden="true">
   <div class="sheet popup-sheet">
@@ -274,11 +636,23 @@
             <svg viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
           </button>
         </div>
+        <div class="field">
+          <label>Payment method</label>
+          <input type="hidden" id="paymentMethod" value="Cash">
+          <button type="button" class="category-picker-btn" id="paymentPickerBtn" aria-haspopup="dialog" aria-controls="paymentModal">
+            <span id="paymentPickerValue">Cash</span>
+            <svg viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
+          </button>
+        </div>
         <div class="field full">
           <label for="note">Note (optional)</label>
           <textarea id="note" maxlength="240" placeholder="Add a note..."></textarea>
         </div>
       </div>
+      <button class="upi-action-btn" type="button" id="payWithUpiBtn">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="M8 10h8M8 14h5"/><path d="m15 17 2-2 2 2"/></svg>
+        Pay & record with UPI
+      </button>
       <button class="save-btn" type="submit">Save expense</button>
       <button class="cancel-btn" type="button" id="cancelBtn" formnovalidate>Cancel</button>
     </form>
@@ -290,8 +664,17 @@
   "use strict";
 
   const STORAGE_KEY = "daily_spend_expenses_v1";
+  const BUDGET_KEY = "daily_spend_monthly_budget_v1";
+  const MY_UPI_KEY = "daily_spend_my_upi_v1";
+  const SAVED_SHOPS_KEY = "daily_spend_saved_shops_v1";
+  const INCOME_KEY = "daily_spend_monthly_income_v1";
   const $ = (id) => document.getElementById(id);
   let expenses = loadExpenses();
+  let pendingUpiRecord = null;
+  let qrStream = null;
+  let qrScanTimer = null;
+  let selectedCategoryFilter = "all";
+  let selectedPaymentFilter = "all";
 
   function loadExpenses() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
@@ -332,6 +715,287 @@
     return `<svg viewBox="0 0 24 24">${paths[cat] || paths.Other}</svg>`;
   }
 
+
+
+  function loadSavedShops() {
+    try {
+      const data = JSON.parse(localStorage.getItem(SAVED_SHOPS_KEY) || "[]");
+      return Array.isArray(data) ? data : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function saveShopDetails(shop) {
+    if (!shop?.upiId) return;
+    const clean = {
+      upiId: shop.upiId,
+      name: shop.name || shop.upiId,
+      merchantCode: shop.merchantCode || "",
+      lastUsed: Date.now()
+    };
+    const list = loadSavedShops().filter(x => x.upiId !== clean.upiId);
+    list.unshift(clean);
+    localStorage.setItem(SAVED_SHOPS_KEY, JSON.stringify(list.slice(0, 20)));
+  }
+
+  function parseUpiQr(raw) {
+    const value = String(raw || "").trim();
+    if (!/^upi:\/\//i.test(value)) return null;
+
+    try {
+      const query = value.includes("?") ? value.split("?").slice(1).join("?") : "";
+      const p = new URLSearchParams(query);
+      const upiId = (p.get("pa") || "").trim();
+
+      if (!validUpiId(upiId)) return null;
+
+      return {
+        upiId,
+        name: (p.get("pn") || upiId).trim(),
+        amount: p.get("am") || "",
+        note: p.get("tn") || p.get("tr") || "",
+        merchantCode: p.get("mc") || ""
+      };
+    } catch (_) {
+      return null;
+    }
+  }
+
+  async function detectQr(source) {
+    if (!("BarcodeDetector" in window)) return null;
+    try {
+      const detector = new BarcodeDetector({formats:["qr_code"]});
+      const results = await detector.detect(source);
+      return results.length ? (results[0].rawValue || "") : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function stopQrScanner() {
+    if (qrScanTimer) {
+      clearInterval(qrScanTimer);
+      qrScanTimer = null;
+    }
+    if (qrStream) {
+      qrStream.getTracks().forEach(track => track.stop());
+      qrStream = null;
+    }
+    if ($("qrVideo")) $("qrVideo").srcObject = null;
+  }
+
+  function openQrScanner() {
+    $("upiModal").classList.remove("open");
+    $("scannerStatus").textContent = "Starting camera…";
+    $("qrScannerModal").classList.add("open");
+    $("qrScannerModal").setAttribute("aria-hidden","false");
+    setTimeout(startQrScanner, 120);
+  }
+
+  function closeQrScanner(returnToUpi=true) {
+    stopQrScanner();
+    $("qrScannerModal").classList.remove("open");
+    $("qrScannerModal").setAttribute("aria-hidden","true");
+    if ($("uploadedImage")) {
+      $("uploadedImage").removeAttribute("src");
+      $("uploadedImagePreview").hidden = true;
+    }
+    if (returnToUpi && !$("upiModal").classList.contains("open")) {
+      $("upiModal").classList.add("open");
+      $("upiModal").setAttribute("aria-hidden","false");
+    }
+  }
+
+  async function startQrScanner() {
+    stopQrScanner();
+
+    if (!navigator.mediaDevices?.getUserMedia) {
+      $("scannerStatus").textContent = "Live camera is unavailable here. Use Choose QR image.";
+      return;
+    }
+    if (!("BarcodeDetector" in window)) {
+      $("scannerStatus").textContent = "Live QR scanning is not supported here. Use Choose QR image.";
+      return;
+    }
+
+    try {
+      qrStream = await navigator.mediaDevices.getUserMedia({
+        video: {facingMode:{ideal:"environment"}, width:{ideal:1280}, height:{ideal:720}},
+        audio: false
+      });
+
+      const video = $("qrVideo");
+      video.srcObject = qrStream;
+      await video.play();
+      $("scannerStatus").textContent = "Scanning…";
+
+      const detector = new BarcodeDetector({formats:["qr_code"]});
+      qrScanTimer = setInterval(async () => {
+        if (!qrStream || video.readyState < 2) return;
+
+        try {
+          const found = await detector.detect(video);
+          if (!found.length) return;
+
+          const shop = parseUpiQr(found[0].rawValue || "");
+          if (!shop) {
+            $("scannerStatus").textContent = "QR detected, but it is not a valid UPI QR.";
+            return;
+          }
+
+          stopQrScanner();
+          useScannedShop(shop);
+          closeQrScanner(false);
+          $("upiModal").classList.add("open");
+          $("upiModal").setAttribute("aria-hidden","false");
+        } catch (_) {}
+      }, 450);
+    } catch (_) {
+      $("scannerStatus").textContent = "Camera permission was unavailable. Use Choose QR image.";
+    }
+  }
+
+  function useScannedShop(shop) {
+    $("payeeUpiId").value = shop.upiId;
+    $("payeeName").value = shop.name;
+    if (shop.amount) $("upiPayAmount").value = shop.amount;
+    saveShopDetails(shop);
+
+    showAppDialog(
+      "Shop QR scanned",
+      `${shop.name} · ${shop.upiId}${shop.amount ? ` · Amount ${money(shop.amount)}` : ""}`,
+      "Continue"
+    );
+  }
+
+  function renderSavedShops() {
+    const list = loadSavedShops();
+    $("savedShopOptions").innerHTML = list.map(shop => `
+      <button type="button" class="popup-option" data-saved-shop="${esc(shop.upiId)}">
+        <span class="saved-shop-main">
+          <span class="saved-shop-icon"><svg viewBox="0 0 24 24"><path d="M5 5h14v16l-7-3-7 3V5Z"/><path d="M8 9h8M8 12h6"/></svg></span>
+          <span class="saved-shop-text"><strong>${esc(shop.name)}</strong><small>${esc(shop.upiId)}</small></span>
+        </span>
+        <span class="popup-radio" aria-hidden="true"></span>
+      </button>
+    `).join("") || '<div class="empty">No shops saved yet.</div>';
+  }
+
+  function openSavedShops() {
+    renderSavedShops();
+    $("savedShopsModal").classList.add("open");
+    $("savedShopsModal").setAttribute("aria-hidden","false");
+  }
+
+  function closeSavedShops() {
+    $("savedShopsModal").classList.remove("open");
+    $("savedShopsModal").setAttribute("aria-hidden","true");
+  }
+
+  function getMyUpiId() {
+    return localStorage.getItem(MY_UPI_KEY) || "";
+  }
+
+  function setMyUpiId(value) {
+    const v = String(value || "").trim();
+    if (v) localStorage.setItem(MY_UPI_KEY, v);
+    else localStorage.removeItem(MY_UPI_KEY);
+  }
+
+  function validUpiId(value) {
+    return /^[^@\s]+@[A-Za-z0-9._-]+$/.test(String(value || "").trim());
+  }
+
+  function openUpiModal(fromExpenseForm=false) {
+    $("myUpiId").value = getMyUpiId();
+    if (fromExpenseForm) $("upiPayAmount").value = $("amount").value || "";
+    $("upiModal").classList.add("open");
+    $("upiModal").setAttribute("aria-hidden","false");
+  }
+
+  function closeUpiModal() {
+    $("upiModal").classList.remove("open");
+    $("upiModal").setAttribute("aria-hidden","true");
+  }
+
+  function launchUpiPayment() {
+    const myUpi = $("myUpiId").value.trim();
+    const payee = $("payeeUpiId").value.trim();
+    const payeeName = $("payeeName").value.trim() || "UPI Payment";
+    const amount = Number($("upiPayAmount").value);
+
+    if (myUpi && !validUpiId(myUpi)) {
+      showAppDialog("Invalid UPI ID", "Enter your UPI ID like name@upi.", "OK");
+      return;
+    }
+    if (!validUpiId(payee)) {
+      showAppDialog("Payee UPI ID needed", "Scan the shop QR or enter the payee UPI ID.", "OK");
+      return;
+    }
+    if (!Number.isFinite(amount) || amount <= 0) {
+      showAppDialog("Amount needed", "Enter the payment amount before opening PhonePe.", "OK");
+      return;
+    }
+
+    setMyUpiId(myUpi);
+    saveShopDetails({upiId:payee, name:payeeName});
+
+    pendingUpiRecord = {
+      amount,
+      date: dateKey(),
+      category: $("category").value || "Other",
+      paymentMethod: "UPI",
+      payeeUpiId: payee,
+      payeeName
+    };
+
+    const query = new URLSearchParams({
+      pa: payee,
+      pn: payeeName,
+      am: amount.toFixed(2),
+      cu: "INR"
+    }).toString();
+
+    const genericUpi = `upi://pay?${query}`;
+    const phonePeIntent = `intent://pay?${query}#Intent;scheme=upi;package=com.phonepe.app;end`;
+
+    closeUpiModal();
+    document.body.dataset.upiPending = "1";
+
+    if (/Android/i.test(navigator.userAgent)) {
+      window.location.href = phonePeIntent;
+      setTimeout(() => {
+        if (document.visibilityState === "visible" && document.body.dataset.upiPending === "1") {
+          window.location.href = genericUpi;
+        }
+      }, 1800);
+    } else {
+      window.location.href = genericUpi;
+    }
+  }
+
+  function handleUpiReturn() {
+    if (!pendingUpiRecord) return;
+    const pending = pendingUpiRecord;
+    pendingUpiRecord = null;
+    delete document.body.dataset.upiPending;
+
+    showAppDialog(
+      "UPI payment",
+      `You returned from the UPI app. Record ${money(pending.amount)} as an expense?`,
+      "Record expense",
+      "Not now",
+      () => {
+        openModal();
+        setSelectedDate(pending.date);
+        $("amount").value = pending.amount.toFixed(2);
+        setSelectedPaymentMethod("UPI");
+        setSelectedCategory(pending.category);
+      }
+    );
+  }
+
   function openModal(expense = null) {
     $("expenseModal").classList.add("open");
     $("formTitle").textContent = expense ? "Edit expense" : "Add expense";
@@ -340,6 +1004,7 @@
     $("amount").value = expense?.amount ?? "";
     $("name").value = expense?.name ?? "";
     setSelectedCategory(expense?.category ?? "Food");
+    setSelectedPaymentMethod(expense?.paymentMethod ?? "Cash");
     $("note").value = expense?.note ?? "";
     setTimeout(() => $("name").focus(), 50);
   }
@@ -348,12 +1013,20 @@
     closeCategoryPicker();
     closeCalendar();
     closeMonthPicker();
+    closePaymentPicker();
+    closeBudgetModal();
+    closeUpiModal();
+    closeIncomeModal();
+    $("backupModal").classList.remove("open");
+    $("backupModal").setAttribute("aria-hidden","true");
     closeAppDialog();
     $("expenseModal").classList.remove("open");
     $("expenseForm").reset();
     $("editId").value = "";
     setSelectedCategory("Food");
+    setSelectedPaymentMethod("Cash");
     setSelectedDate(dateKey());
+  $("myUpiId").value = getMyUpiId();
   }
 
   function filteredForToday() {
@@ -418,14 +1091,128 @@
     }
   }
 
+
+
+  function getMonthlyIncome() {
+    const n = Number(localStorage.getItem(INCOME_KEY) || 0);
+    return Number.isFinite(n) && n > 0 ? n : 0;
+  }
+
+  function setMonthlyIncome(value) {
+    const n = Number(value);
+    if (Number.isFinite(n) && n > 0) localStorage.setItem(INCOME_KEY, String(n));
+    else localStorage.removeItem(INCOME_KEY);
+  }
+
+  function openIncomeModal() {
+    $("incomeInput").value = getMonthlyIncome() || "";
+    $("incomeModal").classList.add("open");
+    $("incomeModal").setAttribute("aria-hidden","false");
+  }
+
+  function closeIncomeModal() {
+    $("incomeModal").classList.remove("open");
+    $("incomeModal").setAttribute("aria-hidden","true");
+  }
+
+  function getMonthlyBudget() {
+    const value = Number(localStorage.getItem(BUDGET_KEY) || 0);
+    return Number.isFinite(value) && value > 0 ? value : 0;
+  }
+
+  function setMonthlyBudget(value) {
+    const n = Number(value);
+    if (Number.isFinite(n) && n > 0) localStorage.setItem(BUDGET_KEY, String(n));
+    else localStorage.removeItem(BUDGET_KEY);
+  }
+
+  function currentMonthKey() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+  }
+
+  function monthExpenses(monthKey = currentMonthKey()) {
+    return expenses.filter(e => e.date.startsWith(monthKey));
+  }
+
+  function renderBudgetAndInsights() {
+    const monthKey = currentMonthKey();
+    const monthList = monthExpenses(monthKey);
+    const spent = monthList.reduce((s,e)=>s+Number(e.amount),0);
+    const budget = getMonthlyBudget();
+
+    $("budgetSpent").textContent = money(spent);
+    $("budgetLimit").textContent = budget ? `of ${money(budget)}` : "No limit";
+    $("budgetLabel").textContent = budget ? `Monthly budget · ${monthLabel(monthKey)}` : "No budget set";
+    $("budgetFill").style.width = budget ? `${Math.min(100,(spent/budget)*100)}%` : "0%";
+
+    if (!budget) {
+      $("budgetRemaining").textContent = "Set a monthly budget to track your limit";
+      $("budgetPercent").textContent = "0%";
+    } else {
+      const remaining = budget - spent;
+      $("budgetRemaining").textContent = remaining >= 0 ? `${money(remaining)} remaining` : `${money(Math.abs(remaining))} over budget`;
+      $("budgetPercent").textContent = `${Math.round((spent/budget)*100)}%`;
+    }
+
+    $("insightEntries").textContent = monthList.length;
+    const daysElapsed = Math.max(1, new Date().getDate());
+    $("insightAverage").textContent = money(spent/daysElapsed);
+
+    const byCat = {};
+    monthList.forEach(e => byCat[e.category || "Other"] = (byCat[e.category || "Other"] || 0) + Number(e.amount));
+    const cats = Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
+    const top = cats[0];
+    $("insightTopCategory").textContent = top ? top[0] : "—";
+    $("insightSummary").textContent = cats.length ? `${cats.length} categories · ${monthLabel(monthKey)}` : `No spending yet · ${monthLabel(monthKey)}`;
+
+    const max = top ? top[1] : 1;
+    $("categoryBreakdown").innerHTML = cats.slice(0,6).map(([cat,total]) => `
+      <div class="breakdown-row">
+        <div class="breakdown-icon">${categoryIcon(cat)}</div>
+        <div class="breakdown-info">
+          <strong>${esc(cat)}</strong>
+          <small>${Math.round(total/spent*100)}% of monthly spending</small>
+          <div class="breakdown-bar"><span style="width:${Math.max(3,(total/max)*100)}%"></span></div>
+        </div>
+        <div class="breakdown-amount">${money(total)}</div>
+      </div>
+    `).join("") || '<div class="empty" style="padding:12px 0 2px">No category data yet.</div>';
+  }
+
+  function openBudgetModal() {
+    $("budgetInput").value = getMonthlyBudget() || "";
+    $("budgetModal").classList.add("open");
+    $("budgetModal").setAttribute("aria-hidden","false");
+    setTimeout(() => $("budgetInput").focus(), 50);
+  }
+
+  function closeBudgetModal() {
+    $("budgetModal").classList.remove("open");
+    $("budgetModal").setAttribute("aria-hidden","true");
+  }
+
+
+  function renderBalance() {
+    const income = getMonthlyIncome();
+    const spent = monthExpenses(currentMonthKey()).reduce((s,e)=>s+Number(e.amount),0);
+    const balance = income - spent;
+    $("balanceValue").textContent = money(balance);
+    $("incomeValue").textContent = `Income ${money(income)}`;
+    $("spentValue").textContent = `Spent ${money(spent)}`;
+    $("balanceLabel").textContent = income ? `Current month · ${monthLabel(currentMonthKey())}` : "Set income to track your balance";
+  }
+
   function renderHome() {
     const t = totals();
     const today = filteredForToday();
-    $("todayTotal").textContent = money(t.today);
+    $("todayTotal").textContent = money(t.month);
     $("weekTotal").textContent = money(t.week);
     $("monthTotal").textContent = money(t.month);
     $("todayCount").textContent = `${today.length} ${today.length===1 ? "item" : "items"}`;
     $("todayLabel").textContent = `Today · ${niceDate(dateKey())}`;
+    renderBudgetAndInsights();
+    renderBalance();
 
     if (!today.length) {
       $("todayList").innerHTML = '<div class="empty">No expenses recorded today.</div>';
@@ -437,9 +1224,10 @@
   function rowHtml(e) {
     return `<div class="expense-row">
       <div class="cat-icon">${categoryIcon(e.category)}</div>
-      <div class="expense-info"><strong>${esc(e.name)}</strong><small>${esc(e.category)}${e.note ? " · "+esc(e.note) : ""}</small></div>
+      <div class="expense-info"><strong>${esc(e.name)}</strong><small>${esc(e.category)} · ${esc(e.paymentMethod || "Cash")}${e.note ? " · "+esc(e.note) : ""}</small></div>
       <div class="expense-amount">${money(e.amount)}</div>
       <div class="small-actions">
+        <button class="tiny-btn" data-duplicate="${e.id}" title="Duplicate">${copyIcon()}</button>
         <button class="tiny-btn" data-edit="${e.id}" title="Edit">${pencilIcon()}</button>
         <button class="tiny-btn" data-delete="${e.id}" title="Delete">${trashIcon()}</button>
       </div>
@@ -459,7 +1247,12 @@
 
     const q = $("searchInput").value.trim().toLowerCase();
     const chosen = monthInput.value;
-    let list = expenses.filter(e=>e.date.startsWith(chosen) && (!q || `${e.name} ${e.category} ${e.note||""}`.toLowerCase().includes(q)));
+    let list = expenses.filter(e=>{
+      const text = `${e.name} ${e.category} ${e.note||""} ${e.paymentMethod||"Cash"}`.toLowerCase();
+      const categoryOk = selectedCategoryFilter === "all" || (e.category || "Other") === selectedCategoryFilter;
+      const paymentOk = selectedPaymentFilter === "all" || (e.paymentMethod || "Cash") === selectedPaymentFilter;
+      return e.date.startsWith(chosen) && (!q || text.includes(q)) && categoryOk && paymentOk;
+    });
     list.sort((a,b)=>b.date.localeCompare(a.date) || b.createdAt-a.createdAt);
 
     const groups = {};
@@ -493,6 +1286,7 @@
   function esc(s) {
     return String(s ?? "").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   }
+  function copyIcon(){return '<svg viewBox="0 0 24 24"><path d="M9 9h10v10H9z"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1 1v1h9V5"/></svg>'}
   function pencilIcon(){return '<svg viewBox="0 0 24 24"><path d="m4 20 4-1 10-10-3-3L5 16l-1 4Z"/><path d="m14 6 3 3"/></svg>'}
   function trashIcon(){return '<svg viewBox="0 0 24 24"><path d="M5 7h14M10 11v6M14 11v6M8 7l1-3h6l1 3m-8 0 1 14h8l1-14"/></svg>'}
 
@@ -502,6 +1296,373 @@
     if (id==="historyView") renderHistory();
     window.scrollTo({top:0,behavior:"smooth"});
   }
+
+
+  $("budgetBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openBudgetModal();
+  });
+
+  $("setBudgetBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openBudgetModal();
+  });
+
+  $("closeBudget").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeBudgetModal();
+  });
+
+  $("budgetModal").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeBudgetModal();
+    }
+  });
+
+  $("saveBudgetBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const value = Number($("budgetInput").value);
+    if (!Number.isFinite(value) || value <= 0) {
+      showAppDialog("Invalid budget", "Enter a budget amount greater than zero.", "OK");
+      return;
+    }
+    setMonthlyBudget(value);
+    closeBudgetModal();
+    renderHome();
+  });
+
+  $("clearBudgetBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setMonthlyBudget(0);
+    closeBudgetModal();
+    renderHome();
+  });
+
+  $("monthInsightsBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    switchView("historyView");
+    $("monthSelect").value = currentMonthKey();
+    $("monthPickerValue").textContent = monthLabel(currentMonthKey());
+    $("searchInput").value = "";
+    renderHistory();
+  });
+
+
+
+  $("scanShopQrBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openQrScanner();
+  });
+
+  $("closeQrScanner").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeQrScanner(true);
+  });
+
+  $("qrScannerModal").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeQrScanner(true);
+    }
+  });
+
+  $("startQrBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    startQrScanner();
+  });
+
+
+  $("uploadImageBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    $("imageInput").click();
+  });
+
+  $("imageInput").addEventListener("change", async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const previewUrl = URL.createObjectURL(file);
+    $("uploadedImage").src = previewUrl;
+    $("uploadedImagePreview").hidden = false;
+    $("scannerStatus").textContent = "Image uploaded.";
+
+    // Also check whether the uploaded image contains a UPI QR.
+    let source = null;
+    try {
+      source = await createImageBitmap(file);
+    } catch (_) {}
+
+    if (source) {
+      const raw = await detectQr(source);
+      source.close?.();
+      const shop = parseUpiQr(raw);
+
+      if (shop) {
+        useScannedShop(shop);
+        closeQrScanner(false);
+        $("upiModal").classList.add("open");
+        $("upiModal").setAttribute("aria-hidden","false");
+      } else {
+        showAppDialog(
+          "Image uploaded",
+          "The image was added successfully. No UPI QR was detected, so you can keep the image for reference or upload a QR separately.",
+          "OK"
+        );
+      }
+    } else {
+      showAppDialog("Image uploaded", "The image was added successfully.", "OK");
+    }
+
+    e.target.value = "";
+  });
+
+  $("clearUploadedImage").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    $("uploadedImage").removeAttribute("src");
+    $("uploadedImagePreview").hidden = true;
+    $("scannerStatus").textContent = "Ready.";
+  });
+
+  $("chooseQrImageBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    $("qrImageInput").click();
+  });
+
+  $("qrImageInput").addEventListener("change", async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    $("scannerStatus").textContent = "Reading QR code…";
+
+    let source = null;
+    try {
+      source = await createImageBitmap(file);
+    } catch (_) {}
+
+    const raw = source ? await detectQr(source) : null;
+    source?.close?.();
+    e.target.value = "";
+
+    const shop = parseUpiQr(raw);
+    if (!shop) {
+      showAppDialog("UPI QR not found", "The uploaded file did not contain a valid UPI QR code. Try Upload QR or scan the shop QR.", "OK");
+      return;
+    }
+
+    useScannedShop(shop);
+    closeQrScanner(false);
+    $("upiModal").classList.add("open");
+    $("upiModal").setAttribute("aria-hidden","false");
+  });
+
+  $("savedShopsBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openSavedShops();
+  });
+
+  $("closeSavedShops").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeSavedShops();
+  });
+
+  $("savedShopsModal").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) closeSavedShops();
+  });
+
+  $("savedShopOptions").addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-saved-shop]");
+    if (!btn) return;
+    const shop = loadSavedShops().find(x => x.upiId === btn.dataset.savedShop);
+    if (!shop) return;
+    $("payeeUpiId").value = shop.upiId;
+    $("payeeName").value = shop.name;
+    closeSavedShops();
+    $("upiModal").classList.add("open");
+    $("upiModal").setAttribute("aria-hidden","false");
+  });
+
+  $("upiBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openUpiModal(false);
+  });
+
+  $("closeUpi").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeUpiModal();
+  });
+
+  $("upiCancelBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeUpiModal();
+  });
+
+  $("upiModal").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeUpiModal();
+    }
+  });
+
+  $("launchUpiBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    launchUpiPayment();
+  });
+
+  $("payWithUpiBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openUpiModal(true);
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && document.body.dataset.upiPending === "1") {
+      setTimeout(handleUpiReturn, 250);
+    }
+  });
+
+
+  $("balanceBtn").addEventListener("click", openIncomeModal);
+  $("setIncomeBtn").addEventListener("click", openIncomeModal);
+  $("closeIncome").addEventListener("click", closeIncomeModal);
+  $("incomeModal").addEventListener("click", e=>{ if(e.target===e.currentTarget) closeIncomeModal(); });
+
+  $("saveIncomeBtn").addEventListener("click", ()=>{
+    const value = Number($("incomeInput").value);
+    if(!Number.isFinite(value) || value <= 0) {
+      showAppDialog("Invalid income","Enter an income amount greater than zero.","OK");
+      return;
+    }
+    setMonthlyIncome(value);
+    closeIncomeModal();
+    renderHome();
+  });
+
+  $("clearIncomeBtn").addEventListener("click", ()=>{
+    setMonthlyIncome(0);
+    closeIncomeModal();
+    renderHome();
+  });
+
+  $("backupBtn").addEventListener("click", ()=>{
+    $("backupModal").classList.add("open");
+    $("backupModal").setAttribute("aria-hidden","false");
+  });
+
+  $("closeBackup").addEventListener("click", ()=>{
+    $("backupModal").classList.remove("open");
+    $("backupModal").setAttribute("aria-hidden","true");
+  });
+
+  $("backupModal").addEventListener("click", e=>{
+    if(e.target===e.currentTarget) {
+      $("backupModal").classList.remove("open");
+      $("backupModal").setAttribute("aria-hidden","true");
+    }
+  });
+
+  $("downloadBackupBtn").addEventListener("click", ()=>{
+    const data = {
+      version: 2,
+      exportedAt: new Date().toISOString(),
+      expenses,
+      budget: getMonthlyBudget(),
+      income: getMonthlyIncome(),
+      savedShops: loadSavedShops()
+    };
+    const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `daily-spend-backup-${dateKey()}.json`;
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  });
+
+  $("restoreBackupBtn").addEventListener("click", ()=>$("restoreBackupInput").click());
+
+  $("restoreBackupInput").addEventListener("change", async e=>{
+    const file = e.target.files?.[0];
+    if(!file) return;
+    try {
+      const data = JSON.parse(await file.text());
+      if(!data || !Array.isArray(data.expenses)) throw new Error("Invalid backup");
+      showAppDialog(
+        "Restore backup",
+        `Restore ${data.expenses.length} expenses? Your current saved data will be replaced.`,
+        "Restore",
+        "Cancel",
+        ()=>{
+          expenses = data.expenses;
+          saveExpenses();
+          setMonthlyBudget(Number(data.budget) || 0);
+          setMonthlyIncome(Number(data.income) || 0);
+          if(Array.isArray(data.savedShops)) {
+            localStorage.setItem(SAVED_SHOPS_KEY, JSON.stringify(data.savedShops.slice(0,20)));
+          }
+          renderHome();
+          renderHistory();
+        }
+      );
+    } catch (_) {
+      showAppDialog("Invalid backup","This file is not a valid Daily Spend backup.","OK");
+    }
+    e.target.value="";
+  });
+
+  document.querySelectorAll("[data-category-filter]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      selectedCategoryFilter = btn.dataset.categoryFilter;
+      document.querySelectorAll("[data-category-filter]").forEach(b=>b.classList.toggle("active",b===btn));
+      renderHistory();
+    });
+  });
+
+  document.querySelectorAll("[data-payment-filter]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      selectedPaymentFilter = btn.dataset.paymentFilter;
+      document.querySelectorAll("[data-payment-filter]").forEach(b=>b.classList.toggle("active",b===btn));
+      renderHistory();
+    });
+  });
+
+  document.querySelectorAll("[data-quick-cat]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const item = {
+        id: crypto.randomUUID(),
+        date: dateKey(),
+        amount: Number(btn.dataset.quickAmount),
+        name: btn.dataset.quickName,
+        category: btn.dataset.quickCat,
+        paymentMethod: "Cash",
+        note: "Quick add",
+        createdAt: Date.now()
+      };
+      expenses = [item,...expenses];
+      saveExpenses();
+      renderHome();
+      renderHistory();
+    });
+  });
 
   $("addBtn").onclick = () => openModal();
   $("closeModal").onclick = closeModal;
@@ -516,6 +1677,7 @@
       amount: Number($("amount").value),
       name: $("name").value.trim(),
       category: $("category").value,
+      paymentMethod: $("paymentMethod").value || "Cash",
       note: $("note").value.trim(),
       createdAt: id ? (expenses.find(x=>x.id===id)?.createdAt || Date.now()) : Date.now()
     };
@@ -526,11 +1688,29 @@
 
   document.addEventListener("click", e=>{
     const edit = e.target.closest("[data-edit]");
+    const duplicate = e.target.closest("[data-duplicate]");
     const del = e.target.closest("[data-delete]");
     if(edit){
       const item = expenses.find(x=>x.id===edit.dataset.edit);
       if(item) openModal(item);
     }
+    if(duplicate){
+      const item = expenses.find(x=>x.id===duplicate.dataset.duplicate);
+      if(item){
+        const copy = {
+          ...item,
+          id: crypto.randomUUID(),
+          date: dateKey(),
+          createdAt: Date.now()
+        };
+        expenses = [copy, ...expenses];
+        saveExpenses();
+        renderHome();
+        renderHistory();
+        showAppDialog("Expense duplicated", `"${item.name}" was copied to today.`, "OK");
+      }
+    }
+
     if(del){
       const item = expenses.find(x=>x.id===del.dataset.delete);
       if(item) {
@@ -553,6 +1733,28 @@
   });
 
   document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>switchView(b.dataset.view));
+
+  $("clearAllBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!expenses.length) {
+      showAppDialog("No expenses", "There are no expenses to clear.", "OK");
+      return;
+    }
+    showAppDialog(
+      "Clear all expenses",
+      "This will permanently remove every saved expense from this device.",
+      "Clear all",
+      "Cancel",
+      () => {
+        expenses = [];
+        saveExpenses();
+        renderHome();
+        renderHistory();
+      }
+    );
+  });
+
   $("seeAllBtn").onclick=()=>switchView("historyView");
   $("goTodayBtn").onclick=()=>{
     $("monthSelect").value=dateKey().slice(0,7);
@@ -659,6 +1861,36 @@
     }
   });
 
+
+  const PAYMENT_METHODS = ["Cash","UPI","Card","Bank transfer","Other"];
+
+  function setSelectedPaymentMethod(method) {
+    const value = PAYMENT_METHODS.includes(method) ? method : "Cash";
+    $("paymentMethod").value = value;
+    $("paymentPickerValue").textContent = value;
+  }
+
+  function openPaymentPicker() {
+    renderPaymentOptions();
+    $("paymentModal").classList.add("open");
+    $("paymentModal").setAttribute("aria-hidden","false");
+  }
+
+  function closePaymentPicker() {
+    $("paymentModal").classList.remove("open");
+    $("paymentModal").setAttribute("aria-hidden","true");
+  }
+
+  function renderPaymentOptions() {
+    const selected = $("paymentMethod").value || "Cash";
+    $("paymentOptions").innerHTML = PAYMENT_METHODS.map(method => `
+      <button type="button" class="popup-option ${method===selected ? "selected" : ""}" data-payment="${esc(method)}">
+        <span>${esc(method)}</span>
+        <span class="popup-radio" aria-hidden="true"></span>
+      </button>
+    `).join("");
+  }
+
   const CATEGORY_LIST = ["Food","Tea","Travel","Shopping","Bills","Health","Recharge","Other"];
 
   function setSelectedCategory(category) {
@@ -755,6 +1987,36 @@
     if (key===$("date").value) classes.push("selected");
     return `<button type="button" class="${classes.join(" ")}" data-calendar-date="${key}">${day}</button>`;
   }
+
+
+  $("paymentPickerBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openPaymentPicker();
+  });
+
+  $("closePayment").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closePaymentPicker();
+  });
+
+  $("paymentOptions").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const btn = e.target.closest("[data-payment]");
+    if (!btn) return;
+    setSelectedPaymentMethod(btn.dataset.payment);
+    closePaymentPicker();
+  });
+
+  $("paymentModal").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      e.stopPropagation();
+      closePaymentPicker();
+    }
+  });
 
   $("categoryPickerBtn").addEventListener("click", (e) => {
     e.preventDefault();
@@ -988,6 +2250,7 @@
   $("exportBtn").onclick=downloadExpensePdf;
 
   setSelectedDate(dateKey());
+  setSelectedPaymentMethod("Cash");
   closeCalendar();
   closeMonthPicker();
   closeAppDialog();
@@ -995,6 +2258,7 @@
   $("monthPickerValue").textContent = monthLabel($("monthSelect").value);
   renderHome();
   renderHistory();
+  renderBalance();
 })();
 </script>
 </body>
