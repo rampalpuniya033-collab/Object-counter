@@ -1,589 +1,1000 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b0d12" />
-  <title>Terviqo Social Video Downloader</title>
-  <style>
-    :root{
-      --bg:#0b0d12;
-      --panel:#11151d;
-      --panel-2:#171c25;
-      --border:#252c38;
-      --text:#f3f5f8;
-      --muted:#9ba5b4;
-      --accent:#ffffff;
-      --accent-text:#0b0d12;
-      --success:#8ee6b0;
-      --danger:#ff9e9e;
-      --shadow:0 18px 50px rgba(0,0,0,.28);
-      --radius:20px;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#0b0d12 0%,#0d1118 100%);color:var(--text)}
-    body{padding:24px}
-    button,input{font:inherit}
-    button{cursor:pointer}
-    .app{width:min(1120px,100%);margin:0 auto}
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand-mark{width:42px;height:42px;border:1px solid var(--border);border-radius:14px;background:var(--panel);display:grid;place-items:center;box-shadow:var(--shadow)}
-    .brand-mark svg{width:22px;height:22px}
-    .brand h1{font-size:18px;line-height:1.1;margin:0;font-weight:800;letter-spacing:-.03em}
-    .brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
-    .theme-btn{width:42px;height:42px;border:1px solid var(--border);border-radius:14px;background:var(--panel);color:var(--text);display:grid;place-items:center}
-    .theme-btn svg{width:18px;height:18px}
-    .hero{padding:28px;border:1px solid var(--border);border-radius:28px;background:radial-gradient(circle at top right,rgba(255,255,255,.07),transparent 34%),var(--panel);box-shadow:var(--shadow)}
-    .hero h2{margin:0;font-size:clamp(28px,5vw,44px);letter-spacing:-.05em;line-height:1.02}
-    .hero .sub{margin:12px 0 24px;max-width:760px;color:var(--muted);font-size:15px;line-height:1.6}
-    .input-wrap{display:flex;gap:10px;align-items:stretch}
-    .url-box{position:relative;flex:1}
-    .url-box input{width:100%;height:56px;padding:0 52px 0 16px;border-radius:16px;border:1px solid var(--border);background:#0c1016;color:var(--text);outline:none}
-    .url-box input:focus{border-color:#66707e;box-shadow:0 0 0 3px rgba(255,255,255,.05)}
-    .paste{position:absolute;right:8px;top:8px;width:40px;height:40px;border:0;border-radius:12px;background:var(--panel-2);color:var(--text);display:grid;place-items:center}
-    .paste svg{width:17px;height:17px}
-    .primary{height:56px;padding:0 20px;border:0;border-radius:16px;background:var(--accent);color:var(--accent-text);font-weight:800;display:flex;align-items:center;justify-content:center;gap:9px;min-width:138px}
-    .primary:disabled{opacity:.55;cursor:not-allowed}
-    .secondary:disabled,.download:disabled{opacity:.38;cursor:not-allowed;filter:saturate(.4)}
-    .primary svg{width:18px;height:18px}
-    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-    .chip{border:1px solid var(--border);background:#0d1118;color:#c8ced7;border-radius:999px;padding:7px 11px;font-size:12px}
-    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:18px}
-    .card{border:1px solid var(--border);border-radius:22px;background:var(--panel);box-shadow:var(--shadow)}
-    .card-head{padding:18px 18px 0;display:flex;align-items:center;justify-content:space-between}
-    .card-head h3{font-size:15px;margin:0;letter-spacing:-.02em}
-    .card-body{padding:18px}
-    .preview{aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#0a0d12;border:1px solid var(--border);display:grid;place-items:center;position:relative}
-    .preview video,.preview img{width:100%;height:100%;object-fit:cover;display:none}
-    .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;padding:26px;color:var(--muted)}
-    .empty-icon{width:48px;height:48px;border-radius:15px;background:var(--panel-2);display:grid;place-items:center;color:#dce1e8}
-    .empty-icon svg{width:23px;height:23px}
-    .platform{margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .platform-name{font-weight:800;font-size:15px}
-    .platform-domain{font-size:12px;color:var(--muted);margin-top:3px}
-    .badge{padding:7px 10px;border-radius:999px;border:1px solid var(--border);font-size:11px;color:#cfd5dd;background:#0e131b}
-    .details{display:grid;gap:10px}
-    .row{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:12px 0;border-bottom:1px solid var(--border)}
-    .row:last-child{border-bottom:0}
-    .label{color:var(--muted);font-size:12px}
-    .value{text-align:right;font-size:13px;font-weight:700;word-break:break-word}
-    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-    .secondary,.download{height:48px;border-radius:14px;border:1px solid var(--border);background:var(--panel-2);color:var(--text);font-weight:750}
-    .download{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
-    .actions button{display:flex;align-items:center;justify-content:center;gap:8px}
-    .actions svg{width:17px;height:17px}
-    .status{margin-top:18px;padding:14px 15px;border-radius:16px;border:1px solid var(--border);background:#0d1118;color:var(--muted);font-size:13px;line-height:1.5;min-height:48px}
-    .status.success{border-color:rgba(142,230,176,.28);color:var(--success)}
-    .status.error{border-color:rgba(255,158,158,.28);color:var(--danger)}
-    .progress{height:7px;border-radius:999px;background:#202632;overflow:hidden;margin-top:10px;display:none}
-    .progress-bar{height:100%;width:0%;background:#fff;transition:width .2s ease}
-    .note{padding:14px 16px;border-radius:16px;background:#0e131a;border:1px solid var(--border);color:var(--muted);font-size:12px;line-height:1.6;margin-top:18px}
-    .note strong{color:#e6ebf2}
-    .footer{padding:18px 2px;color:#717b89;font-size:11px;line-height:1.6}
-    .spin{animation:spin 1s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @media (max-width: 820px){
-      body{padding:14px}
-      .hero{padding:20px}
-      .input-wrap{flex-direction:column}
-      .primary{width:100%}
-      .grid{grid-template-columns:1fr}
-      .actions{grid-template-columns:1fr}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Daily Spend</title>
+<style>
+  :root{
+    --bg:#f7f7f7; --card:#fff; --text:#111; --muted:#6d6d6d; --line:#dedede;
+    --soft:#f0f0f0; --danger:#111; --shadow:0 8px 24px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  button,input,select,textarea{font:inherit}
+  button{cursor:pointer}
+  .app{max-width:760px;margin:0 auto;min-height:100vh;padding:18px 16px 96px}
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .brand{display:flex;gap:12px;align-items:center}
+  .brand-mark{width:42px;height:42px;border:1.5px solid #111;border-radius:13px;display:grid;place-items:center;background:#fff}
+  .brand h1{font-size:21px;margin:0;font-weight:750;letter-spacing:-.03em}
+  .brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
+  .icon-btn{width:42px;height:42px;border:1px solid var(--line);background:#fff;border-radius:12px;display:grid;place-items:center}
+  svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .hero{background:#111;color:#fff;border-radius:22px;padding:22px;box-shadow:var(--shadow);margin-bottom:15px}
+  .hero .label{font-size:12px;opacity:.72}
+  .hero .amount{font-size:34px;font-weight:800;letter-spacing:-.04em;margin:6px 0 18px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .stat{background:#1f1f1f;border-radius:14px;padding:11px}
+  .stat span{display:block;font-size:10px;opacity:.65}
+  .stat strong{display:block;margin-top:3px;font-size:15px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:15px}
+  .section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .section-head h2{font-size:15px;margin:0}
+  .link-btn{border:0;background:transparent;padding:4px;color:#111;font-size:12px;text-decoration:underline}
+  .expense-row{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid #eee}
+  .expense-row:last-child{border-bottom:0;padding-bottom:2px}
+  .cat-icon{width:38px;height:38px;border-radius:12px;background:var(--soft);display:grid;place-items:center;flex:0 0 38px}
+  .expense-info{min-width:0;flex:1}
+  .expense-info strong{font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .expense-info small{font-size:11px;color:var(--muted)}
+  .expense-amount{font-weight:750;font-size:13px}
+  .empty{text-align:center;padding:24px 6px;color:var(--muted);font-size:13px}
+  .fab{position:fixed;right:max(16px,calc((100vw - 760px)/2 + 16px));bottom:82px;border:0;border-radius:16px;background:#111;color:#fff;height:52px;padding:0 18px;display:flex;align-items:center;gap:8px;box-shadow:0 10px 25px rgba(0,0,0,.2);font-weight:700}
+  nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:min(760px,100%);background:rgba(255,255,255,.97);border-top:1px solid var(--line);padding:8px 10px max(8px,env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1fr}
+  nav button{border:0;background:transparent;height:48px;color:#777;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px}
+  nav button.active{color:#111;font-weight:700}
+  .view{display:none}.view.active{display:block}
+  .date-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .date-title{font-size:18px;font-weight:800;letter-spacing:-.02em}
+  .today-btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px 10px;font-size:11px}
+  .month-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .search{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;margin-bottom:12px}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;padding:0;z-index:1000}
+  .modal.open{display:flex}
+  .modal .sheet{color:#111;box-shadow:0 18px 45px rgba(0,0,0,.22)}
+  #calendarModal{z-index:1100;pointer-events:auto}
+  #expenseModal{z-index:1000;pointer-events:auto}
+  .sheet{background:#fff;width:min(760px,100%);border-radius:24px 24px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto}
+  .sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
+  .sheet-head h2{margin:0;font-size:19px}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}
+  .field label{font-size:11px;font-weight:700}
+  .date-picker-btn{width:100%;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;outline:none;text-align:left}
+  .date-picker-btn svg{width:17px;height:17px}
+  .category-picker-btn{width:100%;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;color:#111;outline:none;text-align:left}
+  .category-picker-btn svg{width:17px;height:17px}
+  .category-sheet{padding-bottom:calc(18px + env(safe-area-inset-bottom));z-index:1200}
+  #categoryModal{z-index:1200}
+  .category-options{display:flex;flex-direction:column;border:1px solid #dedede;border-radius:16px;overflow:hidden;background:#fff}
+  .category-option{min-height:58px;border:0;border-bottom:1px solid #e5e5e5;background:#fff;color:#111;display:flex;align-items:center;justify-content:space-between;padding:0 14px;text-align:left}
+  .category-option:last-child{border-bottom:0}
+  .category-option:active{background:#f1f1f1}
+  .category-option.selected{font-weight:800}
+  .category-name{display:flex;align-items:center;gap:11px;font-size:15px}
+  .category-option-icon{width:34px;height:34px;border:1px solid #111;border-radius:10px;display:grid;place-items:center;background:#fff}
+  .category-option-icon svg{width:17px;height:17px}
+  .category-radio{width:20px;height:20px;border:2px solid #111;border-radius:50%;display:grid;place-items:center}
+  .category-option.selected .category-radio::after{content:"";width:9px;height:9px;border-radius:50%;background:#111}
+  .calendar-sheet{padding-bottom:calc(18px + env(safe-area-inset-bottom));z-index:1100}
+  .calendar-top{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:8px;margin-bottom:12px}
+  .calendar-month-title{border:0;background:transparent;font-weight:800;font-size:16px}
+  .calendar-weekdays,.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .calendar-weekdays{margin-bottom:7px}
+  .calendar-weekdays span{text-align:center;font-size:10px;color:var(--muted);font-weight:700;padding:5px 0}
+  .calendar-day{height:40px;border:1px solid transparent;background:#fff;border-radius:10px;font-size:12px;display:grid;place-items:center;color:#111}
+  .calendar-day.muted{color:#b5b5b5}
+  .calendar-day.today{border-color:#111;font-weight:800}
+  .calendar-day.selected{background:#111;color:#fff;font-weight:800}
+  .calendar-day:not(.selected):hover{border-color:#aaa}
+  .field input,.field select,.field textarea{border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;outline:none}
+  .field textarea{min-height:78px;resize:vertical}
+  .save-btn{width:100%;margin-top:14px;border:0;background:#111;color:#fff;border-radius:13px;padding:13px;font-weight:750}
+  .cancel-btn{width:100%;margin-top:8px;border:1px solid var(--line);background:#fff;color:#111;border-radius:13px;padding:12px;font-weight:650}
+  .history-group{margin-bottom:18px}.history-date{display:flex;justify-content:space-between;align-items:center;margin:0 0 8px;font-size:12px;color:var(--muted);font-weight:700}
+  .history-total{color:#111}
+  .small-actions{display:flex;gap:6px}
+  .tiny-btn{border:1px solid var(--line);background:#fff;border-radius:9px;width:29px;height:29px;display:grid;place-items:center}
+  @media(max-width:520px){.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+</style>
 </head>
 <body>
-  <main class="app">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M7 4h10v4H7z"/><path d="M5 8h14v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/>
-            <path d="M9 12h6M12 10v6"/>
-          </svg>
-        </div>
-        <div>
-          <h1>Terviqo Downloader</h1>
-          <p>Social video download utility</p>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M7 4h10M7 20h10M8 4v16M16 4v16M8 8h8M8 16h8"/></svg>
+      </div>
+      <div><h1>Daily Spend</h1><p>Simple, clear expense tracking</p></div>
+    </div>
+    <button class="icon-btn" id="exportBtn" title="Export">
+      <svg viewBox="0 0 24 24"><path d="M12 3v12m0-12 4 4m-4-4L8 7"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <section class="view active" id="homeView">
+      <div class="hero">
+        <div class="label">Today's expenses</div>
+        <div class="amount" id="todayTotal">₹0</div>
+        <div class="stats">
+          <div class="stat"><span>Today</span><strong id="todayCount">0 items</strong></div>
+          <div class="stat"><span>This week</span><strong id="weekTotal">₹0</strong></div>
+          <div class="stat"><span>This month</span><strong id="monthTotal">₹0</strong></div>
         </div>
       </div>
-      <button class="theme-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>
-          <circle cx="12" cy="12" r="3.5"/>
-        </svg>
+
+      <div class="card">
+        <div class="section-head">
+          <h2 id="todayLabel">Today's expenses</h2>
+          <button class="link-btn" id="seeAllBtn">See all</button>
+        </div>
+        <div id="todayList"></div>
+      </div>
+
+      <button class="fab" id="addBtn">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Add expense
       </button>
-    </header>
+    </section>
 
-    <section class="hero">
-      <h2>Paste a video link.<br/>Get the video.</h2>
-      <p class="sub">Paste a public video link, analyze it, preview the result, and download it. Social-media page links use the included server backend; direct MP4/WebM links can also download in-browser.</p>
-
-      <div class="input-wrap">
-        <div class="url-box">
-          <input id="urlInput" type="url" inputmode="url" autocomplete="off" placeholder="Paste video or social-media link here..." />
-          <button class="paste" id="pasteBtn" title="Paste from clipboard" aria-label="Paste from clipboard">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <rect x="8" y="7" width="11" height="13" rx="2"/><path d="M8 10H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/><path d="M9 4h5"/>
-            </svg>
+    <section class="view" id="historyView">
+      <div class="card">
+        <div class="date-row">
+          <div><div class="date-title">Expense history</div><div id="historySub" style="color:#6d6d6d;font-size:11px;margin-top:3px"></div></div>
+          <button class="today-btn" id="goTodayBtn">This month</button>
+        </div>
+        <div class="month-row">
+          <input type="hidden" id="monthSelect">
+          <button type="button" class="month-picker-btn" id="monthPickerBtn" aria-haspopup="dialog" aria-controls="monthModal">
+            <span id="monthPickerValue">October 2026</span>
+            <svg viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
           </button>
         </div>
-        <button class="primary" id="analyzeBtn">
-          <svg id="analyzeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M13 3 5 14h6l-1 7 8-11h-6z"/>
-          </svg>
-          <span id="analyzeText">Analyze</span>
-        </button>
-      </div>
-
-      <div class="chips">
-        <span class="chip">Instagram</span>
-        <span class="chip">Facebook</span>
-        <span class="chip">TikTok</span>
-        <span class="chip">X</span>
-        <span class="chip">YouTube</span>
-        <span class="chip">Direct MP4</span>
-      </div>
-
-      <div class="status" id="status">Paste a URL to begin.</div>
-      <div class="progress" id="progress"><div class="progress-bar" id="progressBar"></div></div>
-    </section>
-
-    <section class="grid">
-      <div class="card">
-        <div class="card-head"><h3>Preview</h3><span class="badge" id="typeBadge">Waiting</span></div>
-        <div class="card-body">
-          <div class="preview">
-            <video id="videoPreview" controls playsinline preload="metadata"></video>
-            <img id="imagePreview" alt="Video thumbnail preview" />
-            <div class="empty-state" id="emptyState">
-              <div class="empty-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <rect x="3" y="5" width="18" height="14" rx="2"/>
-                  <path d="m10 9 5 3-5 3z"/>
-                </svg>
-              </div>
-              <strong>No preview yet</strong>
-              <span>The app will show a preview when the media URL is directly accessible.</span>
-            </div>
-          </div>
-
-          <div class="platform">
-            <div>
-              <div class="platform-name" id="platformName">Unknown platform</div>
-              <div class="platform-domain" id="platformDomain">—</div>
-            </div>
-            <span class="badge" id="accessBadge">Not analyzed</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-head"><h3>Video details</h3><span class="badge" id="formatBadge">—</span></div>
-        <div class="card-body">
-          <div class="details">
-            <div class="row"><span class="label">File name</span><span class="value" id="fileName">—</span></div>
-            <div class="row"><span class="label">Content type</span><span class="value" id="contentType">—</span></div>
-            <div class="row"><span class="label">Size</span><span class="value" id="fileSize">—</span></div>
-            <div class="row"><span class="label">Source</span><span class="value" id="sourceType">—</span></div>
-          </div>
-
-          <div class="actions">
-            <button class="secondary" id="openBtn" disabled>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M14 5h5v5"/><path d="M19 5 10 14"/><path d="M19 13v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4"/>
-              </svg>
-              Open
-            </button>
-            <button class="download" id="downloadBtn" disabled>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M12 4v10"/><path d="m8 11 4 4 4-4"/><path d="M5 20h14"/>
-              </svg>
-              Download
-            </button>
-          </div>
-
-          <div class="note">
-            <strong>Important:</strong> a browser-only HTML page cannot reliably extract protected media from every social platform. Instagram/Facebook/TikTok/X/YouTube page links often require a server-side extractor, API access, authentication, or platform-specific handling. This app therefore supports direct media URLs immediately and has a configurable backend hook for page URLs.
-          </div>
-        </div>
+        <input class="search" id="searchInput" placeholder="Search expenses..." />
+        <div id="historyList"></div>
       </div>
     </section>
-
-    <div class="footer">
-      Use this tool only for videos you are allowed to download. Platform terms, copyright restrictions, private accounts, login-only media, DRM, and access controls may prevent downloading.
-    </div>
   </main>
+</div>
+
+<nav>
+  <button class="active" data-view="homeView">
+    <svg viewBox="0 0 24 24"><path d="m3 11 9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+    Home
+  </button>
+  <button data-view="historyView">
+    <svg viewBox="0 0 24 24"><path d="M4 5h16v15H4z"/><path d="M8 3v4M16 3v4M4 9h16M8 13h3M8 16h5"/></svg>
+    Expenses
+  </button>
+</nav>
+
+
+<div class="modal" id="calendarModal" aria-hidden="true">
+  <div class="sheet calendar-sheet">
+    <div class="sheet-head">
+      <h2>Select date</h2>
+      <button class="icon-btn" id="closeCalendar" type="button">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="calendar-top">
+      <button class="icon-btn" id="prevMonth" type="button" aria-label="Previous month">
+        <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <button class="calendar-month-title" id="calendarMonthTitle" type="button"></button>
+      <button class="icon-btn" id="nextMonth" type="button" aria-label="Next month">
+        <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    </div>
+    <div class="calendar-weekdays">
+      <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+    </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+    <button class="save-btn" id="calendarTodayBtn" type="button">Use today</button>
+  </div>
+</div>
+
+
+<div class="modal" id="categoryModal" aria-hidden="true">
+  <div class="sheet category-sheet">
+    <div class="sheet-head">
+      <h2>Select category</h2>
+      <button class="icon-btn" id="closeCategory" type="button">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="category-options" id="categoryOptions"></div>
+  </div>
+</div>
+
+
+<div class="modal" id="monthModal" aria-hidden="true">
+  <div class="sheet popup-sheet">
+    <div class="sheet-head">
+      <h2>Select month</h2>
+      <button class="icon-btn" id="closeMonth" type="button">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="popup-list" id="monthOptions"></div>
+  </div>
+</div>
+
+<div class="modal" id="appDialogModal" aria-hidden="true">
+  <div class="sheet popup-sheet app-dialog-sheet">
+    <div class="sheet-head">
+      <h2 id="appDialogTitle">Notice</h2>
+      <button class="icon-btn" id="appDialogClose" type="button">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="app-dialog-message" id="appDialogMessage"></div>
+    <div class="app-dialog-actions">
+      <button class="cancel-btn" id="appDialogCancel" type="button">Cancel</button>
+      <button class="save-btn" id="appDialogConfirm" type="button">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="expenseModal">
+  <div class="sheet">
+    <div class="sheet-head">
+      <h2 id="formTitle">Add expense</h2>
+      <button class="icon-btn" id="closeModal">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <form id="expenseForm">
+      <input type="hidden" id="editId">
+      <div class="form-grid">
+        <div class="field">
+          <label>Date</label>
+          <input type="hidden" id="date" required>
+          <button type="button" class="date-picker-btn" id="datePickerBtn" aria-haspopup="dialog" aria-controls="calendarModal">
+            <span id="datePickerValue">Today</span>
+            <svg viewBox="0 0 24 24"><path d="M7 3v4M17 3v4M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z"/><path d="M8 13h3M8 16h5"/></svg>
+          </button>
+        </div>
+        <div class="field">
+          <label for="amount">Amount (₹)</label>
+          <input type="number" id="amount" inputmode="decimal" min="0.01" step="0.01" placeholder="0.00" required>
+        </div>
+        <div class="field">
+          <label for="name">Expense name</label>
+          <input type="text" id="name" maxlength="80" placeholder="e.g. Lunch" required>
+        </div>
+        <div class="field">
+          <label>Category</label>
+          <input type="hidden" id="category" value="Food">
+          <button type="button" class="category-picker-btn" id="categoryPickerBtn" aria-haspopup="dialog" aria-controls="categoryModal">
+            <span id="categoryPickerValue">Food</span>
+            <svg viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
+          </button>
+        </div>
+        <div class="field full">
+          <label for="note">Note (optional)</label>
+          <textarea id="note" maxlength="240" placeholder="Add a note..."></textarea>
+        </div>
+      </div>
+      <button class="save-btn" type="submit">Save expense</button>
+      <button class="cancel-btn" type="button" id="cancelBtn" formnovalidate>Cancel</button>
+    </form>
+  </div>
+</div>
 
 <script>
 (() => {
   "use strict";
 
-  // Optional backend endpoint:
-  // Example: https://your-domain.example/api/download?url=<encoded-url>
-  // The endpoint should return JSON:
-  // {
-  //   "ok": true,
-  //   "videoUrl": "https://cdn.example/video.mp4",
-  //   "thumbnailUrl": "...",
-  //   "fileName": "video.mp4",
-  //   "mimeType": "video/mp4",
-  //   "size": 1234567
-  // }
-  const BACKEND_API_BASE = "/api"; // The included Python backend exposes /api/info and /api/download.
-
+  const STORAGE_KEY = "daily_spend_expenses_v1";
   const $ = (id) => document.getElementById(id);
-  const urlInput = $("urlInput");
-  const analyzeBtn = $("analyzeBtn");
-  const analyzeText = $("analyzeText");
-  const analyzeIcon = $("analyzeIcon");
-  const pasteBtn = $("pasteBtn");
-  const status = $("status");
-  const progress = $("progress");
-  const progressBar = $("progressBar");
-  const videoPreview = $("videoPreview");
-  const imagePreview = $("imagePreview");
-  const emptyState = $("emptyState");
-  const openBtn = $("openBtn");
-  const downloadBtn = $("downloadBtn");
-  const typeBadge = $("typeBadge");
-  const formatBadge = $("formatBadge");
-  const accessBadge = $("accessBadge");
-  const platformName = $("platformName");
-  const platformDomain = $("platformDomain");
-  const fileName = $("fileName");
-  const contentType = $("contentType");
-  const fileSize = $("fileSize");
-  const sourceType = $("sourceType");
-  const themeBtn = $("themeBtn");
+  let expenses = loadExpenses();
 
-  let state = {
-    inputUrl: "",
-    mediaUrl: "",
-    mimeType: "",
-    name: "",
-    size: null,
-    direct: false
-  };
-
-  function setStatus(message, kind = "") {
-    status.textContent = message;
-    status.className = "status" + (kind ? " " + kind : "");
+  function loadExpenses() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
+    catch { return []; }
   }
 
-  function resetPreview() {
-    videoPreview.pause();
-    videoPreview.removeAttribute("src");
-    videoPreview.load();
-    imagePreview.removeAttribute("src");
-    videoPreview.style.display = "none";
-    imagePreview.style.display = "none";
-    emptyState.style.display = "flex";
+  function saveExpenses() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses));
   }
 
-  function setBusy(busy) {
-    analyzeBtn.disabled = busy;
-    if (busy) {
-      analyzeText.textContent = "Analyzing";
-      analyzeIcon.classList.add("spin");
-    } else {
-      analyzeText.textContent = "Analyze";
-      analyzeIcon.classList.remove("spin");
-    }
+  function dateKey(date = new Date()) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth()+1).padStart(2,"0");
+    const d = String(date.getDate()).padStart(2,"0");
+    return `${y}-${m}-${d}`;
   }
 
-  function resetDetails() {
-    typeBadge.textContent = "Waiting";
-    formatBadge.textContent = "—";
-    accessBadge.textContent = "Not analyzed";
-    platformName.textContent = "Unknown platform";
-    platformDomain.textContent = "—";
-    fileName.textContent = "—";
-    contentType.textContent = "—";
-    fileSize.textContent = "—";
-    sourceType.textContent = "—";
-    openBtn.disabled = true;
-    downloadBtn.disabled = true;
-    progress.style.display = "none";
-    progressBar.style.width = "0%";
+  function money(n) {
+    return new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:2}).format(Number(n)||0);
   }
 
-  function formatBytes(bytes) {
-    if (!Number.isFinite(bytes) || bytes <= 0) return "Unknown";
-    const units = ["B", "KB", "MB", "GB"];
-    const i = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
-    return (bytes / Math.pow(1024, i)).toFixed(i === 0 ? 0 : 2) + " " + units[i];
+  function niceDate(key) {
+    const d = new Date(key + "T00:00:00");
+    return d.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"});
   }
 
-  function safeFileName(name) {
-    return (name || "terviqo-video")
-      .replace(/[<>:"/\\\\|?*\\x00-\\x1F]/g, "_")
-      .trim()
-      .slice(0, 120) || "terviqo-video";
+  function categoryIcon(cat) {
+    const paths = {
+      Food:'<path d="M7 3v8M4 3v5a3 3 0 0 0 6 0V3M7 11v10M17 3v18M14 3v7a3 3 0 0 0 3 3h3"/>',
+      Travel:'<path d="M5 16h14l-2-7H7l-2 7ZM8 9l1-4h6l1 4M8 16v3M16 16v3M8 12h8"/>',
+      Shopping:'<path d="M5 8h14l-1 12H6L5 8ZM8 8a4 4 0 0 1 8 0"/>',
+      Bills:'<path d="M7 3h10v18l-5-3-5 3V3ZM9 8h6M9 12h6"/>',
+      Health:'<path d="M12 20s-7-4.7-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.3-7 10-7 10Z"/>',
+      Recharge:'<path d="M13 2 6 13h5l-1 9 7-11h-5l1-9Z"/>',
+      Tea:'<path d="M6 8h11v5a5 5 0 0 1-5 5H11a5 5 0 0 1-5-5V8Z"/><path d="M17 10h2a3 3 0 0 1 0 6h-2M9 4v2M13 4v2M17 4v2"/>',
+      Other:'<circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/>'
+    };
+    return `<svg viewBox="0 0 24 24">${paths[cat] || paths.Other}</svg>`;
   }
 
-  function getDomain(url) {
-    try { return new URL(url).hostname.replace(/^www\./, ""); }
-    catch { return ""; }
+  function openModal(expense = null) {
+    $("expenseModal").classList.add("open");
+    $("formTitle").textContent = expense ? "Edit expense" : "Add expense";
+    $("editId").value = expense?.id || "";
+    setSelectedDate(expense?.date || dateKey());
+    $("amount").value = expense?.amount ?? "";
+    $("name").value = expense?.name ?? "";
+    setSelectedCategory(expense?.category ?? "Food");
+    $("note").value = expense?.note ?? "";
+    setTimeout(() => $("name").focus(), 50);
   }
 
-  function detectPlatform(url) {
-    const host = getDomain(url).toLowerCase();
-    if (!host) return "Unknown platform";
-    if (host.includes("instagram.com")) return "Instagram";
-    if (host.includes("facebook.com") || host.includes("fb.watch")) return "Facebook";
-    if (host.includes("tiktok.com")) return "TikTok";
-    if (host === "x.com" || host.includes("twitter.com")) return "X / Twitter";
-    if (host.includes("youtube.com") || host === "youtu.be") return "YouTube";
-    if (host.includes("snapchat.com")) return "Snapchat";
-    if (host.includes("reddit.com")) return "Reddit";
-    if (host.includes("pinterest.com")) return "Pinterest";
-    if (/\.(mp4|webm|mov|m4v|ogv)(\?|#|$)/i.test(url)) return "Direct video";
-    return "Web video";
+  function closeModal() {
+    closeCategoryPicker();
+    closeCalendar();
+    closeMonthPicker();
+    closeAppDialog();
+    $("expenseModal").classList.remove("open");
+    $("expenseForm").reset();
+    $("editId").value = "";
+    setSelectedCategory("Food");
+    setSelectedDate(dateKey());
   }
 
-  function extFromMime(mime) {
-    const m = (mime || "").toLowerCase();
-    if (m.includes("mp4")) return "MP4";
-    if (m.includes("webm")) return "WEBM";
-    if (m.includes("quicktime")) return "MOV";
-    if (m.includes("ogg")) return "OGG";
-    return "VIDEO";
+  function filteredForToday() {
+    const today = dateKey();
+    return expenses.filter(e => e.date === today).sort((a,b) => b.createdAt-a.createdAt);
   }
 
-  function showMedia(mediaUrl, mime = "", thumbnail = "") {
-    emptyState.style.display = "none";
-    if (thumbnail) {
-      imagePreview.src = thumbnail;
-      imagePreview.style.display = "block";
-    }
-    const looksVideo = !mime || mime.startsWith("video/") || /\.(mp4|webm|mov|m4v|ogv)(\?|#|$)/i.test(mediaUrl);
-    if (looksVideo) {
-      videoPreview.src = mediaUrl;
-      videoPreview.style.display = "block";
-      videoPreview.addEventListener("error", () => {
-        videoPreview.style.display = "none";
-        if (!thumbnail) emptyState.style.display = "flex";
-      }, { once: true });
-      videoPreview.load();
-    }
-  }
+  function totals() {
+    const now = new Date();
+    const today = dateKey(now);
+    const thisMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+    const day = now.getDay();
+    const diff = day === 0 ? 6 : day - 1;
+    const monday = new Date(now); monday.setHours(0,0,0,0); monday.setDate(now.getDate()-diff);
+    const mondayKey = dateKey(monday);
 
-  function updateDetails(data) {
-    state = { ...state, ...data };
-    const domain = getDomain(state.inputUrl);
-    platformName.textContent = detectPlatform(state.inputUrl);
-    platformDomain.textContent = domain || "—";
-    typeBadge.textContent = state.direct ? "Direct media" : "Social link";
-    formatBadge.textContent = extFromMime(state.mimeType);
-    accessBadge.textContent = state.mediaUrl ? "Accessible" : "Page only";
-    fileName.textContent = state.name || "—";
-    contentType.textContent = state.mimeType || "Unknown";
-    fileSize.textContent = formatBytes(state.size);
-    sourceType.textContent = state.direct ? "Direct file URL" : "Backend extractor";
-    openBtn.disabled = !state.mediaUrl;
-    downloadBtn.disabled = !state.mediaUrl;
-  }
-
-  function guessDirect(url) {
-    return /\.(mp4|webm|mov|m4v|ogv)(?:[?#].*)?$/i.test(url);
-  }
-
-  async function inspectDirectUrl(url) {
-    const guessed = guessDirect(url);
-    let mime = "";
-    let size = null;
-    let filename = "video";
-    try {
-      const head = await fetch(url, { method: "HEAD", mode: "cors" });
-      if (head.ok) {
-        mime = head.headers.get("content-type") || "";
-        const len = head.headers.get("content-length");
-        if (len) size = Number(len);
-        const cd = head.headers.get("content-disposition") || "";
-        const match = cd.match(/filename\\*?=(?:UTF-8'')?["']?([^;"']+)/i);
-        if (match) filename = decodeURIComponent(match[1]);
-      }
-    } catch (_) {}
-
-    const isVideo = mime.startsWith("video/") || guessed;
-    if (!isVideo) {
-      throw new Error("This link did not expose a directly downloadable video file.");
-    }
-
-    if (!/\\.[a-z0-9]{2,5}$/i.test(filename)) {
-      const ext = mime.includes("webm") ? ".webm" : mime.includes("quicktime") ? ".mov" : ".mp4";
-      filename += ext;
-    }
-
-    return { mediaUrl: url, mimeType: mime || "video/*", size, name: safeFileName(filename), direct: true };
-  }
-
-  async function inspectViaBackend(url) {
-    if (!BACKEND_API_BASE) {
-      throw new Error("No backend is configured for social-media page links.");
-    }
-    const endpoint = BACKEND_API_BASE.replace(/\/$/, "") + "/info?url=" + encodeURIComponent(url);
-    const response = await fetch(endpoint, { method: "GET", headers: { "Accept": "application/json" } });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok || !data.ok) {
-      throw new Error(data?.message || "The backend could not extract this video.");
-    }
     return {
-      mediaUrl: BACKEND_API_BASE.replace(/\/$/, "") + "/download?url=" + encodeURIComponent(url),
-      mimeType: data.mimeType || "video/mp4",
-      size: null,
-      name: safeFileName(data.fileName || "terviqo-video.mp4"),
-      direct: false,
-      thumbnail: data.thumbnailUrl || ""
+      today: expenses.filter(e=>e.date===today).reduce((s,e)=>s+Number(e.amount),0),
+      week: expenses.filter(e=>e.date>=mondayKey && e.date<=today).reduce((s,e)=>s+Number(e.amount),0),
+      month: expenses.filter(e=>e.date.startsWith(thisMonth)).reduce((s,e)=>s+Number(e.amount),0)
     };
   }
 
-  async function analyze() {
-    const raw = urlInput.value.trim();
-    if (!raw) {
-      setStatus("Please paste a video or social-media URL.", "error");
-      return;
-    }
-    let parsed;
+  function playDeleteSound() {
     try {
-      parsed = new URL(raw);
-      if (!/^https?:$/i.test(parsed.protocol)) throw new Error();
-    } catch {
-      setStatus("Please enter a valid http/https URL.", "error");
-      return;
-    }
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const now = ctx.currentTime;
 
-    state = { inputUrl: parsed.href, mediaUrl: "", mimeType: "", name: "", size: null, direct: false };
-    resetPreview();
-    resetDetails();
-    setBusy(true);
-    setStatus("Checking the link…");
+      const master = ctx.createGain();
+      master.gain.setValueAtTime(0.0001, now);
+      master.gain.exponentialRampToValueAtTime(0.16, now + 0.012);
+      master.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
+      master.connect(ctx.destination);
 
-    try {
-      let result;
-      if (guessDirect(parsed.href)) {
-        result = await inspectDirectUrl(parsed.href);
-      } else {
-        try {
-          result = await inspectDirectUrl(parsed.href);
-        } catch (_) {
-          result = await inspectViaBackend(parsed.href);
-        }
-      }
+      const osc = ctx.createOscillator();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(520, now);
+      osc.frequency.exponentialRampToValueAtTime(210, now + 0.20);
+      osc.connect(master);
+      osc.start(now);
+      osc.stop(now + 0.24);
 
-      updateDetails({ ...result, inputUrl: parsed.href });
-      showMedia(result.mediaUrl, result.mimeType, result.thumbnail);
-      setStatus("Video found. Ready to download.", "success");
-    } catch (error) {
-      updateDetails({ inputUrl: parsed.href, mediaUrl: "" });
-      setStatus(error.message || "The link could not be processed.", "error");
-    } finally {
-      setBusy(false);
+      const clickGain = ctx.createGain();
+      clickGain.gain.setValueAtTime(0.0001, now);
+      clickGain.gain.exponentialRampToValueAtTime(0.10, now + 0.004);
+      clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.065);
+      clickGain.connect(ctx.destination);
+
+      const clickOsc = ctx.createOscillator();
+      clickOsc.type = "triangle";
+      clickOsc.frequency.setValueAtTime(900, now);
+      clickOsc.frequency.exponentialRampToValueAtTime(430, now + 0.06);
+      clickOsc.connect(clickGain);
+      clickOsc.start(now);
+      clickOsc.stop(now + 0.07);
+
+      setTimeout(() => ctx.close().catch(() => {}), 350);
+    } catch (_) {
+      // Sound is optional; deletion must continue even if audio is unavailable.
     }
   }
 
-  async function downloadFile() {
-    if (!state.mediaUrl) return;
-    progress.style.display = "block";
-    progressBar.style.width = "0%";
-    setStatus("Preparing download…");
+  function renderHome() {
+    const t = totals();
+    const today = filteredForToday();
+    $("todayTotal").textContent = money(t.today);
+    $("weekTotal").textContent = money(t.week);
+    $("monthTotal").textContent = money(t.month);
+    $("todayCount").textContent = `${today.length} ${today.length===1 ? "item" : "items"}`;
+    $("todayLabel").textContent = `Today · ${niceDate(dateKey())}`;
 
-    try {
-      const response = await fetch(state.mediaUrl, { mode: "cors" });
-      if (!response.ok) throw new Error("Media server returned " + response.status + ".");
-      const total = Number(response.headers.get("content-length")) || state.size || 0;
-
-      if (!response.body) {
-        const blob = await response.blob();
-        triggerBlobDownload(blob);
-        return;
-      }
-
-      const reader = response.body.getReader();
-      const chunks = [];
-      let received = 0;
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        chunks.push(value);
-        received += value.length;
-        if (total > 0) {
-          progressBar.style.width = Math.min(100, received / total * 100).toFixed(1) + "%";
-        }
-      }
-
-      const blob = new Blob(chunks, { type: state.mimeType || "video/mp4" });
-      triggerBlobDownload(blob);
-      progressBar.style.width = "100%";
-      setStatus("Download prepared successfully.", "success");
-    } catch (error) {
-      // Some servers allow opening the media URL but block browser fetch/CORS.
-      window.open(state.mediaUrl, "_blank", "noopener,noreferrer");
-      setStatus("The browser could not fetch the file directly, so the media URL was opened in a new tab.", "error");
-    } finally {
-      setTimeout(() => { progress.style.display = "none"; }, 1000);
+    if (!today.length) {
+      $("todayList").innerHTML = '<div class="empty">No expenses recorded today.</div>';
+      return;
     }
+    $("todayList").innerHTML = today.slice(0,8).map(rowHtml).join("");
   }
 
-  function triggerBlobDownload(blob) {
+  function rowHtml(e) {
+    return `<div class="expense-row">
+      <div class="cat-icon">${categoryIcon(e.category)}</div>
+      <div class="expense-info"><strong>${esc(e.name)}</strong><small>${esc(e.category)}${e.note ? " · "+esc(e.note) : ""}</small></div>
+      <div class="expense-amount">${money(e.amount)}</div>
+      <div class="small-actions">
+        <button class="tiny-btn" data-edit="${e.id}" title="Edit">${pencilIcon()}</button>
+        <button class="tiny-btn" data-delete="${e.id}" title="Delete">${trashIcon()}</button>
+      </div>
+    </div>`;
+  }
+
+  function renderHistory() {
+    const monthInput = $("monthSelect");
+    const months = [...new Set(expenses.map(e=>e.date.slice(0,7)))].sort().reverse();
+    const fallback = dateKey().slice(0,7);
+    let current = monthInput.value || fallback;
+
+    if (!months.includes(current)) current = months[0] || fallback;
+    monthInput.value = current;
+    $("monthPickerValue").textContent = monthLabel(current);
+    renderMonthOptions(months, current);
+
+    const q = $("searchInput").value.trim().toLowerCase();
+    const chosen = monthInput.value;
+    let list = expenses.filter(e=>e.date.startsWith(chosen) && (!q || `${e.name} ${e.category} ${e.note||""}`.toLowerCase().includes(q)));
+    list.sort((a,b)=>b.date.localeCompare(a.date) || b.createdAt-a.createdAt);
+
+    const groups = {};
+    for (const e of list) (groups[e.date] ||= []).push(e);
+    $("historySub").textContent = list.length ? `${list.length} ${list.length===1?"expense":"expenses"}` : "No expenses for this month";
+
+    $("historyList").innerHTML = Object.entries(groups).map(([date,items])=>{
+      const total = items.reduce((s,e)=>s+Number(e.amount),0);
+      return `<div class="history-group">
+        <div class="history-date"><span>${niceDate(date)}</span><span class="history-total">${money(total)}</span></div>
+        <div class="card" style="margin:0;padding:8px 12px">${items.map(rowHtml).join("")}</div>
+      </div>`;
+    }).join("") || '<div class="empty">No matching expenses.</div>';
+  }
+
+  function renderMonthOptions(months, selected) {
+    const list = months.length ? months : [dateKey().slice(0,7)];
+    $("monthOptions").innerHTML = list.map(m => `
+      <button type="button" class="popup-option ${m===selected ? "selected" : ""}" data-month="${m}">
+        <span>${esc(monthLabel(m))}</span>
+        <span class="popup-radio" aria-hidden="true"></span>
+      </button>
+    `).join("");
+  }
+
+  function monthLabel(key) {
+    const [y,m]=key.split("-").map(Number);
+    return new Date(y,m-1,1).toLocaleDateString("en-IN",{month:"long",year:"numeric"});
+  }
+
+  function esc(s) {
+    return String(s ?? "").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+  function pencilIcon(){return '<svg viewBox="0 0 24 24"><path d="m4 20 4-1 10-10-3-3L5 16l-1 4Z"/><path d="m14 6 3 3"/></svg>'}
+  function trashIcon(){return '<svg viewBox="0 0 24 24"><path d="M5 7h14M10 11v6M14 11v6M8 7l1-3h6l1 3m-8 0 1 14h8l1-14"/></svg>'}
+
+  function switchView(id) {
+    document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active", v.id===id));
+    document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active", b.dataset.view===id));
+    if (id==="historyView") renderHistory();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  $("addBtn").onclick = () => openModal();
+  $("closeModal").onclick = closeModal;
+  $("cancelBtn").addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); closeModal(); });
+
+  $("expenseForm").addEventListener("submit", e=>{
+    e.preventDefault();
+    const id = $("editId").value;
+    const data = {
+      id: id || crypto.randomUUID(),
+      date: $("date").value || dateKey(),
+      amount: Number($("amount").value),
+      name: $("name").value.trim(),
+      category: $("category").value,
+      note: $("note").value.trim(),
+      createdAt: id ? (expenses.find(x=>x.id===id)?.createdAt || Date.now()) : Date.now()
+    };
+    if (!data.name || !Number.isFinite(data.amount) || data.amount <= 0) return;
+    expenses = id ? expenses.map(x=>x.id===id ? data : x) : [data, ...expenses];
+    saveExpenses(); closeModal(); renderHome(); renderHistory();
+  });
+
+  document.addEventListener("click", e=>{
+    const edit = e.target.closest("[data-edit]");
+    const del = e.target.closest("[data-delete]");
+    if(edit){
+      const item = expenses.find(x=>x.id===edit.dataset.edit);
+      if(item) openModal(item);
+    }
+    if(del){
+      const item = expenses.find(x=>x.id===del.dataset.delete);
+      if(item) {
+        showAppDialog(
+          "Delete expense",
+          `Delete "${item.name}"? This cannot be undone.`,
+          "Delete",
+          "Cancel",
+          () => {
+            playDeleteSound();
+            expenses = expenses.filter(x=>x.id!==item.id);
+            saveExpenses();
+            renderHome();
+            renderHistory();
+          },
+          true
+        );
+      }
+    }
+  });
+
+  document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>switchView(b.dataset.view));
+  $("seeAllBtn").onclick=()=>switchView("historyView");
+  $("goTodayBtn").onclick=()=>{
+    $("monthSelect").value=dateKey().slice(0,7);
+    $("monthPickerValue").textContent=monthLabel($("monthSelect").value);
+    $("searchInput").value="";
+    renderHistory();
+  };
+  $("searchInput").oninput=renderHistory;
+
+  function openMonthPicker() {
+    renderHistory();
+    $("monthModal").classList.add("open");
+    $("monthModal").setAttribute("aria-hidden","false");
+  }
+
+  function closeMonthPicker() {
+    $("monthModal").classList.remove("open");
+    $("monthModal").setAttribute("aria-hidden","true");
+  }
+
+  $("monthPickerBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openMonthPicker();
+  });
+
+  $("closeMonth").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeMonthPicker();
+  });
+
+  $("monthOptions").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const btn = e.target.closest("[data-month]");
+    if (!btn) return;
+    $("monthSelect").value = btn.dataset.month;
+    $("monthPickerValue").textContent = monthLabel(btn.dataset.month);
+    closeMonthPicker();
+    renderHistory();
+  });
+
+  $("monthModal").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeMonthPicker();
+    }
+  });
+
+  let appDialogAction = null;
+
+  function openAppDialog(title, message, confirmText, cancelText, onConfirm, destructive=false) {
+    $("appDialogTitle").textContent = title || "Notice";
+    $("appDialogMessage").textContent = message || "";
+    $("appDialogConfirm").textContent = confirmText || "OK";
+    $("appDialogCancel").textContent = cancelText || "Cancel";
+    $("appDialogCancel").style.display = cancelText ? "" : "none";
+    $("appDialogConfirm").style.background = "#111";
+    $("appDialogConfirm").style.color = "#fff";
+    appDialogAction = typeof onConfirm === "function" ? onConfirm : null;
+    const modal = $("appDialogModal");
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden","false");
+  }
+
+  function closeAppDialog() {
+    const modal = $("appDialogModal");
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden","true");
+    appDialogAction = null;
+  }
+
+  function showAppDialog(title, message, confirmText="OK", cancelText="", onConfirm=null, destructive=false) {
+    openAppDialog(title, message, confirmText, cancelText, onConfirm, destructive);
+  }
+
+  $("appDialogConfirm").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const action = appDialogAction;
+    closeAppDialog();
+    if (action) action();
+  });
+
+  $("appDialogClose").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeAppDialog();
+  });
+
+  $("appDialogCancel").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeAppDialog();
+  });
+
+  $("appDialogModal").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeAppDialog();
+    }
+  });
+
+  const CATEGORY_LIST = ["Food","Tea","Travel","Shopping","Bills","Health","Recharge","Other"];
+
+  function setSelectedCategory(category) {
+    const value = CATEGORY_LIST.includes(category) ? category : "Food";
+    $("category").value = value;
+    $("categoryPickerValue").textContent = value;
+  }
+
+  function openCategoryPicker() {
+    renderCategoryOptions();
+    $("categoryModal").classList.add("open");
+    $("categoryModal").setAttribute("aria-hidden","false");
+  }
+
+  function closeCategoryPicker() {
+    $("categoryModal").classList.remove("open");
+    $("categoryModal").setAttribute("aria-hidden","true");
+  }
+
+  function renderCategoryOptions() {
+    const selected = $("category").value || "Food";
+    $("categoryOptions").innerHTML = CATEGORY_LIST.map(cat => `
+      <button type="button" class="category-option ${cat===selected ? "selected" : ""}" data-category="${esc(cat)}">
+        <span class="category-name">
+          <span class="category-option-icon">${categoryIcon(cat)}</span>
+          <span>${esc(cat)}</span>
+        </span>
+        <span class="category-radio" aria-hidden="true"></span>
+      </button>
+    `).join("");
+  }
+
+  function setSelectedDate(key) {
+    $("date").value = key;
+    $("datePickerValue").textContent = niceDate(key);
+  }
+
+  let calendarCursor = new Date();
+  calendarCursor.setDate(1);
+
+  function openCalendar() {
+    const current = $("date").value || dateKey();
+    const d = new Date(current + "T00:00:00");
+    calendarCursor = new Date(d.getFullYear(), d.getMonth(), 1);
+    renderCalendar();
+    const modal = $("calendarModal");
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeCalendar() {
+    const modal = $("calendarModal");
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+  }
+
+  function renderCalendar() {
+    const year = calendarCursor.getFullYear();
+    const month = calendarCursor.getMonth();
+    $("calendarMonthTitle").textContent = calendarCursor.toLocaleDateString("en-IN",{month:"long",year:"numeric"});
+    const first = new Date(year, month, 1);
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const prevDays = (first.getDay() + 6) % 7; // Monday-first calendar
+    const prevMonthDays = new Date(year, month, 0).getDate();
+    const selected = $("date").value;
+    const today = dateKey();
+    const cells = [];
+
+    for (let i=prevDays-1;i>=0;i--) {
+      const d = prevMonthDays-i;
+      const py = month===0 ? year-1 : year;
+      const pm = month===0 ? 11 : month-1;
+      const key = dateKey(new Date(py,pm,d));
+      cells.push(dayButton(d,key,true));
+    }
+    for (let d=1;d<=daysInMonth;d++) {
+      const key = dateKey(new Date(year,month,d));
+      cells.push(dayButton(d,key,false));
+    }
+    while (cells.length < 42) {
+      const d = cells.length - (prevDays + daysInMonth) + 1;
+      const ny = month===11 ? year+1 : year;
+      const nm = month===11 ? 0 : month+1;
+      const key = dateKey(new Date(ny,nm,d));
+      cells.push(dayButton(d,key,true));
+    }
+    $("calendarGrid").innerHTML = cells.join("");
+  }
+
+  function dayButton(day,key,muted) {
+    const classes = ["calendar-day"];
+    if (muted) classes.push("muted");
+    if (key===dateKey()) classes.push("today");
+    if (key===$("date").value) classes.push("selected");
+    return `<button type="button" class="${classes.join(" ")}" data-calendar-date="${key}">${day}</button>`;
+  }
+
+  $("categoryPickerBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openCategoryPicker();
+  });
+
+  $("closeCategory").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeCategoryPicker();
+  });
+
+  $("categoryOptions").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const btn = e.target.closest("[data-category]");
+    if (!btn) return;
+    setSelectedCategory(btn.dataset.category);
+    closeCategoryPicker();
+  });
+
+  $("categoryModal").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeCategoryPicker();
+    }
+  });
+
+  $("datePickerBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openCalendar();
+  });
+
+  $("closeCalendar").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeCalendar();
+  });
+
+  $("prevMonth").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    calendarCursor.setMonth(calendarCursor.getMonth()-1);
+    renderCalendar();
+  });
+
+  $("nextMonth").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    calendarCursor.setMonth(calendarCursor.getMonth()+1);
+    renderCalendar();
+  });
+
+  $("calendarTodayBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedDate(dateKey());
+    closeCalendar();
+  });
+
+  $("calendarGrid").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const btn = e.target.closest("[data-calendar-date]");
+    if (!btn) return;
+    setSelectedDate(btn.dataset.calendarDate);
+    closeCalendar();
+  });
+
+  $("calendarModal").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeCalendar();
+    }
+  });
+
+  $("expenseModal").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      closeModal();
+    }
+  });
+
+  function pdfSafe(value) {
+    return String(value ?? "")
+      .replace(/[^\x20-\x7E]/g, "?")
+      .replace(/\\/g, "\\\\")
+      .replace(/\(/g, "\\(")
+      .replace(/\)/g, "\\)");
+  }
+
+  function pdfMoney(value) {
+    return "INR " + (Number(value)||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+
+  function wrapPdfText(value, maxChars) {
+    const text = String(value ?? "").replace(/\s+/g," ").trim();
+    if (!text) return [];
+    const words = text.split(" ");
+    const lines = [];
+    let line = "";
+    for (const word of words) {
+      const next = line ? line + " " + word : word;
+      if (next.length > maxChars && line) {
+        lines.push(line);
+        line = word;
+      } else line = next;
+    }
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  function buildPdf(pages) {
+    const objects = [];
+    const add = s => { objects.push(s); return objects.length; };
+    const catalogNum = add("");
+    const pagesNum = add("");
+    const fontNormalNum = add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>");
+    const fontBoldNum = add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>");
+    const pageNums = [];
+
+    pages.forEach(content => {
+      const contentNum = objects.length + 2;
+      const pageNum = add(`<< /Type /Page /Parent ${pagesNum} 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 ${fontNormalNum} 0 R /F2 ${fontBoldNum} 0 R >> >> /Contents ${contentNum} 0 R >>`);
+      const stream = content.join("\n") + "\n";
+      add(`<< /Length ${stream.length} >>\nstream\n${stream}endstream`);
+      pageNums.push(pageNum);
+    });
+
+    objects[catalogNum-1] = `<< /Type /Catalog /Pages ${pagesNum} 0 R >>`;
+    objects[pagesNum-1] = `<< /Type /Pages /Kids [${pageNums.map(n=>`${n} 0 R`).join(" ")}] /Count ${pageNums.length} >>`;
+
+    let pdf = "%PDF-1.4\n%\xE2\xE3\xCF\xD3\n";
+    const offsets = [0];
+    objects.forEach((obj,i) => {
+      offsets[i+1] = pdf.length;
+      pdf += `${i+1} 0 obj\n${obj}\nendobj\n`;
+    });
+    const xref = pdf.length;
+    pdf += `xref\n0 ${objects.length+1}\n0000000000 65535 f \n`;
+    for (let i=1;i<=objects.length;i++) pdf += `${String(offsets[i]).padStart(10,"0")} 00000 n \n`;
+    pdf += `trailer\n<< /Size ${objects.length+1} /Root ${catalogNum} 0 R >>\nstartxref\n${xref}\n%%EOF`;
+    return new Blob([pdf], {type:"application/pdf"});
+  }
+
+  function downloadExpensePdf() {
+    if (!expenses.length) {
+      showAppDialog("Nothing to export", "Add at least one expense before creating a PDF.", "OK");
+      return;
+    }
+
+    const pageW = 595, pageH = 842, margin = 42;
+    const sorted = [...expenses].sort((a,b)=>a.date.localeCompare(b.date) || a.createdAt-b.createdAt);
+    const pages = [];
+    let c = [];
+    let y = 0;
+
+    const rect = (x,top,w,h,fill) => {
+      const yy = pageH - top - h;
+      c.push(`${fill} rg ${x} ${yy} ${w} ${h} re f`);
+    };
+    const text = (x,top,size,value,font="F1",white=false) => {
+      const yy = pageH - top - size;
+      c.push(`${white ? "1 1 1" : "0 0 0"} rg BT /${font} ${size} Tf 1 0 0 1 ${x} ${yy} Tm (${pdfSafe(value)}) Tj ET`);
+    };
+    const line = (x1,top,x2) => {
+      const yy = pageH - top;
+      c.push(`0.86 0.86 0.86 RG 0.6 w ${x1} ${yy} m ${x2} ${yy} l S`);
+    };
+
+    function newPage() {
+      if (c.length) pages.push(c);
+      c = [];
+      rect(0,0,pageW,70,"0.07 0.07 0.07");
+      text(margin,18,19,"Daily Spend","F2",true);
+      text(margin,43,9,"Expense report","F1",true);
+      text(pageW-margin,43,9,`Generated ${niceDate(dateKey())}`,"F1",true);
+      y = 92;
+    }
+
+    newPage();
+    text(margin,y,12,"Summary","F2"); y += 22;
+    const grandTotal = sorted.reduce((s,e)=>s+Number(e.amount),0);
+    text(margin,y,10,`Total expenses: ${pdfMoney(grandTotal)}`);
+    text(margin+210,y,10,`Number of entries: ${sorted.length}`);
+    y += 30;
+
+    let currentDate = null;
+    const flushDateHeader = (date, items) => {
+      if (y > pageH-65) newPage();
+      rect(margin,y-6,pageW-margin*2,24,"0.94 0.94 0.94");
+      text(margin+9,y,10,niceDate(date),"F2");
+      const total = items.reduce((s,e)=>s+Number(e.amount),0);
+      text(pageW-margin-9,y,10,pdfMoney(total),"F2");
+      y += 31;
+    };
+
+    for (const e of sorted) {
+      if (currentDate !== e.date) {
+        currentDate = e.date;
+        flushDateHeader(currentDate, sorted.filter(x=>x.date===e.date));
+      }
+      if (y > pageH-55) newPage();
+      text(margin+9,y,9.5,String(e.name).slice(0,52),"F2");
+      text(pageW-margin-9,y,9.5,pdfMoney(e.amount),"F2");
+      const details = `${e.category}${e.note ? " - " + e.note : ""}`;
+      const wrapped = wrapPdfText(details,72).slice(0,2);
+      wrapped.forEach((ln,i)=>text(margin+9,y+15+i*10,8,ln));
+      y += 15 + Math.max(1,wrapped.length)*10 + 4;
+      line(margin+9,y-4,pageW-margin-9);
+    }
+
+    if (y > pageH-45) newPage();
+    line(margin,y,pageW-margin);
+    text(margin,y+11,11,"Grand total","F2");
+    text(pageW-margin-60,y+11,11,pdfMoney(grandTotal),"F2");
+    text(pageW/2,y+37,7.5,"Generated by Daily Spend","F1");
+
+    if (c.length) pages.push(c);
+    const blob = buildPdf(pages);
     const a = document.createElement("a");
-    const objectUrl = URL.createObjectURL(blob);
-    a.href = objectUrl;
-    a.download = safeFileName(state.name || "terviqo-video.mp4");
-    document.body.appendChild(a);
+    a.href = URL.createObjectURL(blob);
+    a.download = `daily-spend-${dateKey()}.pdf`;
     a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(objectUrl), 30000);
+    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
   }
 
-  pasteBtn.addEventListener("click", async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-      if (text) {
-        urlInput.value = text.trim();
-        urlInput.focus();
-        setStatus("Link pasted. Press Analyze.");
-      }
-    } catch {
-      setStatus("Clipboard access was blocked. Paste the link into the box manually.", "error");
-    }
-  });
+  $("exportBtn").onclick=downloadExpensePdf;
 
-  analyzeBtn.addEventListener("click", analyze);
-  urlInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") analyze();
-  });
-
-  openBtn.addEventListener("click", () => {
-    if (state.mediaUrl) window.open(state.mediaUrl, "_blank", "noopener,noreferrer");
-  });
-
-  downloadBtn.addEventListener("click", downloadFile);
-
-  themeBtn.addEventListener("click", () => {
-    const light = document.documentElement.dataset.theme === "light";
-    if (light) {
-      delete document.documentElement.dataset.theme;
-      document.body.style.background = "";
-      themeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/><circle cx="12" cy="12" r="3.5"/></svg>';
-    } else {
-      document.documentElement.dataset.theme = "light";
-      document.body.style.background = "#f4f6f8";
-      document.documentElement.style.setProperty("--panel", "#ffffff");
-      document.documentElement.style.setProperty("--panel-2", "#f0f2f5");
-      document.documentElement.style.setProperty("--border", "#dde2e8");
-      document.documentElement.style.setProperty("--text", "#11151d");
-      document.documentElement.style.setProperty("--muted", "#626d7b");
-      document.documentElement.style.setProperty("--accent-text", "#ffffff");
-      document.documentElement.style.setProperty("--accent", "#11151d");
-      themeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a7.5 7.5 0 1 0 7.5 7.5A6 6 0 0 1 12 3z"/></svg>';
-    }
-  });
-
-  resetDetails();
+  setSelectedDate(dateKey());
+  closeCalendar();
+  closeMonthPicker();
+  closeAppDialog();
+  $("monthSelect").value = dateKey().slice(0,7);
+  $("monthPickerValue").textContent = monthLabel($("monthSelect").value);
+  renderHome();
+  renderHistory();
 })();
 </script>
 </body>
